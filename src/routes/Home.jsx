@@ -12,9 +12,6 @@ export default function Home() {
             if (user) {
                 // User signed in
                 setLoggedIn(true);
-                toast.success("Logged In!");
-            } else {
-                toast.error('You are not logged in!');
             }
         })
     }, [])
@@ -27,7 +24,6 @@ export default function Home() {
             <div className="flex items-end">
 
             </div>
-            <Toaster />
         </div>
     );
 }

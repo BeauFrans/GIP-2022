@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const [error, setError] = useState(false);
 
     function signInGoogle() {
         signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
@@ -18,16 +18,15 @@ export default function Login() {
 
         signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
             .then(() => {
-                setError(false);
                 window.location.replace('/');
             })
             .catch((error) => {
-                if (error.code === "auth/email-already-in-use") {
-                    setError("Email already in use")
-                } else if (error.code === "auth/weak-password") {
-                    setError('Password must be 6 characters or more')
+                if (error.code === "auth/wrong-password") {
+                    toast.error("Wrong password");
+                } else if (error.code === "auth/user-not-found") {
+                    toast.error("Email is not used");
                 } else {
-                    setError(error.message)
+                    toast.error("A login error occured");
                 }
             });
     }
@@ -35,6 +34,7 @@ export default function Login() {
     return (
         <>
             <div className="flex min-h-full h-screen w-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-700">
+                <Toaster />
                 <div className="w-full max-w-md space-y-4">
                     <div>
                         <img
@@ -79,7 +79,7 @@ export default function Login() {
                                     placeholder="Password"
                                 />
                             </div>
-                            <a href="#" className="font-medium  text-gray-200 hover:underline text-xs">
+                            <a href="/reset" className="font-medium  text-gray-200 hover:underline text-xs">
                                 Forgot your password?
                             </a>
                         </div>
@@ -91,7 +91,7 @@ export default function Login() {
 
                         <button
                             type="submit"
-                            onClick={Login}
+                            onClick={signInPassword}
                             className="group relative flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Sign in
