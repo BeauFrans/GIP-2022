@@ -34,7 +34,6 @@ export default function Login() {
 
     return (
         <>
-
             <div className="flex min-h-full h-screen w-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-700">
                 <div className="w-full max-w-md space-y-4">
                     <div>
