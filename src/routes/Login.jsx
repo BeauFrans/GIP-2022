@@ -34,6 +34,7 @@ export default function Login() {
 
     return (
         <>
+
             <div className="flex min-h-full h-screen w-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-700">
                 <div className="w-full max-w-md space-y-4">
                     <div>
@@ -91,7 +92,7 @@ export default function Login() {
 
                         <button
                             type="submit"
-                            onClick={signInGoogle}
+                            onClick={Login}
                             className="group relative flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Sign in
