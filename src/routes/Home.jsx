@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
+import Sidebar from "../components/sidebar";
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function Home() {
@@ -19,10 +20,10 @@ export default function Home() {
 
 
     return (
-        <div className="w-screen h-screen bg-slate-700">
+        <div className="w-screen h-screen bg-slate-700 overflow-hidden">
             <Header />
-            <div className="flex items-end">
-
+            <div className="max-w-xs">
+                <Sidebar />
             </div>
         </div>
     );
