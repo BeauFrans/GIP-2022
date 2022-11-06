@@ -9,7 +9,10 @@ export default function Login() {
 
     function signInGoogle() {
         signInWithPopup(auth, new GoogleAuthProvider()).then((res) => {
-            console.log(res);
+            toast.success('Login successful!')
+            setTimeout(() => {
+                window.location.replace('/');
+            }, 700);
         }).catch(() => alert('A login error occured'));
     }
 
