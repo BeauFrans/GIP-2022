@@ -26,7 +26,7 @@ export default function Sidebar() {
                     <div className='border-b border-slate-600 w-full' />
                     <nav className="mt-6 flex flex-col space-y-1">
                         <a
-                            href="#"
+                            href="/"
                             className="flex items-center rounded-lg bg-slate-700 px-4 py-2 text-gray-200 hover:bg-slate-600"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ export default function Sidebar() {
                             </svg>
 
 
-                            <span className="ml-3 text-sm font-medium"> Homepagina </span>
+                            <span className="ml-3 text-sm font-medium"> Homepage </span>
                         </a>
 
                         <details className="group">
@@ -51,7 +51,7 @@ export default function Sidebar() {
                                 </svg>
 
 
-                                <span className="ml-3 text-sm font-medium"> Mijn evaluaties </span>
+                                <span className="ml-3 text-sm font-medium"> My evaluations </span>
 
                                 <span
                                     className="ml-auto shrink-0 transition duration-300 group-open:-rotate-180"
@@ -73,7 +73,7 @@ export default function Sidebar() {
 
                             <nav aria-label="Teams Nav" className="mt-1.5 ml-8 flex flex-col">
                                 <a
-                                    href="#"
+                                    href="/existingevaluations"
                                     className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600 "
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -86,11 +86,11 @@ export default function Sidebar() {
                                     </svg>
 
 
-                                    <span className="ml-3 text-sm font-medium"> Gemaakte evaluaties </span>
+                                    <span className="ml-3 text-sm font-medium"> Existing Evaluations </span>
                                 </a>
 
                                 <a
-                                    href="#"
+                                    href="/make-evaluation"
                                     className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600 "
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ export default function Sidebar() {
                                     </svg>
 
 
-                                    <span className="ml-3 text-sm font-medium"> Evaluatie maken </span>
+                                    <span className="ml-3 text-sm font-medium"> Make Evaluation </span>
 
 
                                 </a>
@@ -109,7 +109,7 @@ export default function Sidebar() {
                         </details>
 
                         <a
-                            href="#"
+                            href="/results"
                             className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600  bg-slate-700"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -122,12 +122,12 @@ export default function Sidebar() {
                             </svg>
 
 
-                            <span className="ml-3 text-sm font-medium"> Resultalten </span>
+                            <span className="ml-3 text-sm font-medium"> Results </span>
 
                         </a>
 
                         <a
-                            href="#"
+                            href="/myclasses"
                             className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600  bg-slate-700"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ export default function Sidebar() {
                             </svg>
 
 
-                            <span className="ml-3 text-sm font-medium"> Mijn klassen </span>
+                            <span className="ml-3 text-sm font-medium"> My Classes </span>
                         </a>
 
                         <details className="group">
@@ -154,7 +154,7 @@ export default function Sidebar() {
                                 </svg>
 
 
-                                <span className="ml-3 text-sm font-medium"> Instellingen </span>
+                                <span className="ml-3 text-sm font-medium"> Settings </span>
 
                                 <span
                                     className="ml-auto shrink-0 transition duration-300 group-open:-rotate-180"
@@ -176,7 +176,7 @@ export default function Sidebar() {
 
                             <nav aria-label="Account Nav" className="mt-1.5 ml-8 flex flex-col">
                                 <a
-                                    href="#"
+                                    href="/settingsaccount"
                                     className="flex items-center rounded-lg px-4 py-2  text-gray-200 hover:bg-slate-600 "
                                 >
                                     <svg
@@ -194,11 +194,11 @@ export default function Sidebar() {
                                         />
                                     </svg>
 
-                                    <span className="ml-3 text-sm font-medium"> Account </span>
+                                    <span className="ml-3 text-sm font-medium"> Account Settings </span>
                                 </a>
 
                                 <a
-                                    href="#"
+                                    href="/reset"
                                     className="flex items-center rounded-lg px-4 py-2  text-gray-200 hover:bg-slate-600 "
                                 >
                                     <svg
