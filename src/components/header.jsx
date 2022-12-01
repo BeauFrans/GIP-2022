@@ -40,9 +40,11 @@ export default function Header() {
             </div>
 
             <div>
-                {loggedIn ?
-                    <button onClick={logOut} className="bg-blue-700 text-white py-2 px-5 rounded-full font-semibold mr-5 hover:bg-blue-600">Logout</button> :
-                    <a href="/login" className="bg-blue-700 text-white py-2 px-5 rounded-full font-semibold mr-5 hover:bg-blue-600">Login</a>
+                {
+                    loggedIn ?
+                        <button onClick={logOut} className="bg-blue-700 text-white py-2 px-5 rounded-full font-semibold mr-5 hover:bg-blue-600">Logout</button>
+                        :
+                        <a href="/login" className="bg-blue-700 text-white py-2 px-5 rounded-full font-semibold mr-5 hover:bg-blue-600">Login</a>
                 }
             </div>
         </header>

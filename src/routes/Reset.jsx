@@ -16,10 +16,7 @@ export default function Reset() {
                 setTimeout(() => {
                     window.location.replace('/login');
                 }, 1500);
-            })
-
-
-            .catch((error) => {
+            }).catch((error) => {
                 toast.error(error.message);
             });
     }
