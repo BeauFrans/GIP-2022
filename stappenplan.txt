@@ -1,6 +1,4 @@
 1. git add .
 2. git commit -m "Message"
 3. git push origin main
-
-openen npm start
-sluiten *control + c*, y, *enter*
+git pull origin (pullen van github)
