@@ -5,7 +5,7 @@ import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 import CreateForm from "../components/createform";
 
-export default function Home() {
+export default function MakeEvaluation() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -13,6 +13,7 @@ export default function Home() {
       if (user) {
         // User signed in
         setLoggedIn(true);
+        console.log(user.uid);
       } else {
         window.location.replace("/not-logged-in");
       }

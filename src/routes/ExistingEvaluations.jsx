@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 
-export default function Home() {
+export default function ExistingEvaluations() {
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {

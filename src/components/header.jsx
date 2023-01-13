@@ -31,11 +31,11 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full p-4 flex items-center bg-slate-800 justify-between">
+    <header className="w-full p-2 flex items-center bg-slate-800 justify-between">
       <Toaster />
       <div className="flex items-center">
         <a href="/">
-          <img src="/logo-studento.png" alt="Studento" />
+          <img src="/logo-studento.png" alt="Studento" width={64} />
         </a>
         <h1 className="text-2xl font-medium text-white ml-5">Studento</h1>
       </div>

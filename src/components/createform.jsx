@@ -1,10 +1,16 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 import {
   CheckIcon,
   ChevronUpDownIcon,
   PlusIcon,
 } from "@heroicons/react/20/solid";
+import { useRef } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import toast, { Toaster } from "react-hot-toast";
 
 const people = [
   { name: "Communicatie" },
@@ -17,8 +23,36 @@ const people = [
 
 export default function CreateForm() {
   const [selected, setSelected] = useState(people[0]);
+  const [user, setUser] = useState(null);
+
+  const title = useRef();
+  const about = useRef();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        window.location.replace("/not-logged-in");
+      }
+    });
+  }, []);
+
+  async function insertEvaluation() {
+    console.log("title:", title.current.value);
+    console.log("about:", about.current.value);
+
+    const docRef = await addDoc(collection(db, "evaluations"), {
+      title: title.current.value,
+      about: about.current.value,
+      user_uid: user.uid,
+    });
+    toast.success("Successfully created evaluation!");
+  }
+
   return (
     <div>
+      <Toaster />
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -33,7 +67,7 @@ export default function CreateForm() {
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <form action="#" method="POST">
+            <div>
               <div className="shadow sm:overflow-hidden sm:rounded-md">
                 <div className="space-y-6 bg-slate-800 px-4 py-5 sm:p-6">
                   <div className="grid grid-cols-3 gap-6">
@@ -49,7 +83,8 @@ export default function CreateForm() {
                           type="text"
                           name="eval-title"
                           id="eval-title"
-                          className="block w-full flex-1 rounded-md  bg-slate-700 border-none focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          ref={title}
+                          className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="Your title...."
                         />
                       </div>
@@ -67,8 +102,9 @@ export default function CreateForm() {
                       <textarea
                         id="about"
                         name="about"
+                        ref={about}
                         rows={3}
-                        className="mt-1 block w-full bg-slate-700 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full text-white bg-slate-700 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
@@ -119,7 +155,7 @@ export default function CreateForm() {
                   </div>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -143,52 +179,85 @@ export default function CreateForm() {
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <form action="#" method="POST">
-              <div className="shadow sm:rounded-md bg-slate-800">
-                <div className="px-4 py-5 sm:p-6">
-                  <div className="flex items-center justify-between space-x-10">
-                    <div className="w-full">
-                      <label
-                        htmlFor="first-name"
-                        className="block text-sm font-medium text-gray-300"
-                      >
-                        Question
-                      </label>
-                      <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        autoComplete="given-name"
-                        className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
+            <div className="shadow sm:rounded-md bg-slate-800">
+              <div className="px-4 py-5 sm:p-6">
+                <div className="flex items-center justify-between space-x-10">
+                  <div className="w-full">
+                    <label
+                      htmlFor="first-name"
+                      className="block text-sm font-medium text-gray-300"
+                    >
+                      Question
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      id="title"
+                      autoComplete="given-name"
+                      className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-3 z-20">
-                      <label className="block text-sm font-medium text-gray-300">
-                        Category
-                      </label>
-                      <div className="w-72 z-50">
-                        <Listbox value={selected} onChange={setSelected}>
-                          <div className="relative mt-1">
-                            <Listbox.Button className="relative cursor-pointer w-full rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                              <span className="block truncate text-gray-300">
-                                {selected.name}
-                              </span>
-                              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                <ChevronUpDownIcon
-                                  className="h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                            </Listbox.Button>
-                            <Transition
-                              as={Fragment}
-                              leave="transition ease-in duration-100"
-                              leaveFrom="opacity-100"
-                              leaveTo="opacity-0"
-                            >
-                              <Listbox.Options className="absolute z-[60] mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  <div className="col-span-6 sm:col-span-3 z-20">
+                    <label className="block text-sm font-medium text-gray-300">
+                      Category
+                    </label>
+                    <div className="w-72 z-50">
+                      <Listbox value={selected} onChange={setSelected}>
+                        <div className="relative mt-1">
+                          <Listbox.Button className="relative cursor-pointer w-full rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <span className="block truncate text-gray-300">
+                              {selected.name}
+                            </span>
+                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <ChevronUpDownIcon
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </Listbox.Button>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <Listbox.Options className="absolute z-[60] mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              <Listbox.Option
+                                className={({ active }) =>
+                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "bg-slate-600 text-white"
+                                      : "text-gray-200"
+                                  }`
+                                }
+                              >
+                                {({ selected }) => (
+                                  <>
+                                    <span
+                                      className={`truncate flex space-x-2 items-center ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
+                                    >
+                                      <PlusIcon className="w-4 h-4" />
+                                      <span>Nieuwe categorie</span>
+                                    </span>
+                                    {selected ? (
+                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                                        <CheckIcon
+                                          className="h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                      </span>
+                                    ) : null}
+                                  </>
+                                )}
+                              </Listbox.Option>
+                              <div className="border-t border-gray-600 my-2" />
+
+                              {people.map((person, personIdx) => (
                                 <Listbox.Option
+                                  key={personIdx}
                                   className={({ active }) =>
                                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                       active
@@ -196,18 +265,18 @@ export default function CreateForm() {
                                         : "text-gray-200"
                                     }`
                                   }
+                                  value={person}
                                 >
                                   {({ selected }) => (
                                     <>
                                       <span
-                                        className={`truncate flex space-x-2 items-center ${
+                                        className={`block truncate ${
                                           selected
                                             ? "font-medium"
                                             : "font-normal"
                                         }`}
                                       >
-                                        <PlusIcon className="w-4 h-4" />
-                                        <span>Nieuwe categorie</span>
+                                        {person.name}
                                       </span>
                                       {selected ? (
                                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
@@ -220,61 +289,24 @@ export default function CreateForm() {
                                     </>
                                   )}
                                 </Listbox.Option>
-                                <div className="border-t border-gray-600 my-2" />
-
-                                {people.map((person, personIdx) => (
-                                  <Listbox.Option
-                                    key={personIdx}
-                                    className={({ active }) =>
-                                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                        active
-                                          ? "bg-slate-600 text-white"
-                                          : "text-gray-200"
-                                      }`
-                                    }
-                                    value={person}
-                                  >
-                                    {({ selected }) => (
-                                      <>
-                                        <span
-                                          className={`block truncate ${
-                                            selected
-                                              ? "font-medium"
-                                              : "font-normal"
-                                          }`}
-                                        >
-                                          {person.name}
-                                        </span>
-                                        {selected ? (
-                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
-                                            <CheckIcon
-                                              className="h-5 w-5"
-                                              aria-hidden="true"
-                                            />
-                                          </span>
-                                        ) : null}
-                                      </>
-                                    )}
-                                  </Listbox.Option>
-                                ))}
-                              </Listbox.Options>
-                            </Transition>
-                          </div>
-                        </Listbox>
-                      </div>
+                              ))}
+                            </Listbox.Options>
+                          </Transition>
+                        </div>
+                      </Listbox>
                     </div>
                   </div>
                 </div>
-                <div className="px-4 py-3 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    Save
-                  </button>
-                </div>
               </div>
-            </form>
+              <div className="px-4 py-3 text-right sm:px-6">
+                <button
+                  onClick={insertEvaluation}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
