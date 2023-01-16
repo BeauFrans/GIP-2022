@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, Transition, Dialog } from "@headlessui/react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import {
@@ -24,11 +24,12 @@ const people = [
 export default function CreateForm() {
   const [selected, setSelected] = useState(people[0]);
   const [user, setUser] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const title = useRef();
   const about = useRef();
   const question = useRef();
-  ///const category = useRef();
+  const category = useRef();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -54,6 +55,15 @@ export default function CreateForm() {
       user_uid: user.uid,
     });
     toast.success("Successfully created evaluation!");
+  }
+
+  async function insertCategory() {
+    const docRef = await addDoc(collection(db, "categories"), {
+      category: category.current.value,
+      user_uid: user.uid,
+    });
+    toast.success("Successfully created category!");
+    setIsOpen(false);
   }
 
   return (
@@ -90,7 +100,7 @@ export default function CreateForm() {
                           name="eval-title"
                           id="eval-title"
                           ref={title}
-                          className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                           placeholder="Your title...."
                         />
                       </div>
@@ -110,7 +120,7 @@ export default function CreateForm() {
                         name="about"
                         ref={about}
                         rows={3}
-                        className="mt-1 block w-full text-white bg-slate-700 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full text-white bg-slate-700 rounded-md border-none shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
@@ -141,7 +151,7 @@ export default function CreateForm() {
                         <div className="flex text-sm text-gray-600">
                           <label
                             htmlFor="file-upload"
-                            className="relative cursor-pointer rounded-md bg-slate-800 font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                            className="relative cursor-pointer rounded-md bg-slate-800 font-medium text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-blue-500"
                           >
                             <span>Upload a file</span>
                             <input
@@ -200,7 +210,7 @@ export default function CreateForm() {
                       name="title"
                       id="title"
                       autoComplete="given-name"
-                      className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       ref={question}
                     />
                   </div>
@@ -210,9 +220,14 @@ export default function CreateForm() {
                       Category
                     </label>
                     <div className="w-72 z-50">
-                      <Listbox value={selected} onChange={setSelected}>
+                      <Listbox
+                        value={selected}
+                        onChange={(value) => {
+                          setSelected(value);
+                        }}
+                      >
                         <div className="relative mt-1">
-                          <Listbox.Button className="relative cursor-pointer w-full rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                          <Listbox.Button className="relative cursor-pointer w-full rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                             <span className="block truncate text-gray-300">
                               {selected.name}
                             </span>
@@ -229,10 +244,11 @@ export default function CreateForm() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Listbox.Options className="absolute z-[60] mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                              <Listbox.Option
+                            <Listbox.Options className="absolute z-[60] no-scrollbar mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              <Listbox.Button
+                                onClick={() => setIsOpen(true)}
                                 className={({ active }) =>
-                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                  `relative cursor-pointer w-full select-none py-2 pl-10 pr-4 hover:bg-slate-600 ${
                                     active
                                       ? "bg-slate-600 text-white"
                                       : "text-gray-200"
@@ -259,7 +275,7 @@ export default function CreateForm() {
                                     ) : null}
                                   </>
                                 )}
-                              </Listbox.Option>
+                              </Listbox.Button>
                               <div className="border-t border-gray-600 my-2" />
 
                               {people.map((person, personIdx) => (
@@ -305,23 +321,94 @@ export default function CreateForm() {
                   </div>
                 </div>
               </div>
-              <div className="px-4 py-3 text-right sm:px-6">
+              <div className="px-4 py-3 flex justify-between sm:px-6">
+                <button className="inline-flex justify-center space-x-2 items-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                  <PlusIcon className="w-4 h-4 text-white" />
+                  <p>Add question</p>
+                </button>
                 <button
                   onClick={insertEvaluation}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   Save
                 </button>
               </div>
             </div>
           </div>
-          <div class="flex">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ">
-              Button
-            </button>
-          </div>
         </div>
       </div>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setIsOpen(false)}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center bg-slate-400 bg-opacity-50">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-slate-700 p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-300"
+                  >
+                    Create new category
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        type="text"
+                        name="category-title"
+                        id="category-title"
+                        ref={category}
+                        className="block w-full flex-1 text-white rounded-md bg-slate-700 border border-slate-600 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        placeholder="Your category title...."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-4 justify-end flex space-x-3">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={insertCategory}
+                    >
+                      Create category
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }
