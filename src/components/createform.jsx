@@ -12,7 +12,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
 
-const people = [
+const categories = [
   { name: "Communicatie" },
   { name: "Middelen aanwenden" },
   { name: "Plannen en organiseren" },
@@ -22,14 +22,14 @@ const people = [
 ];
 
 export default function CreateForm() {
-  const [selected, setSelected] = useState(people[0]);
+  const [selected, setSelected] = useState(categories[0]);
   const [user, setUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [categoryText, setCategoryText] = useState(null);
 
   const title = useRef();
   const about = useRef();
   const question = useRef();
-  const category = useRef();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -42,28 +42,14 @@ export default function CreateForm() {
   }, []);
 
   async function insertEvaluation() {
-    console.log("title:", title.current.value);
-    console.log("about:", about.current.value);
-    console.log("question:", question.current.value);
-    ///console.log("category:", category.current.value);
-
     const docRef = await addDoc(collection(db, "evaluations"), {
       title: title.current.value,
       about: about.current.value,
       question: question.current.value,
-      ///category: category.current.value,
+      category: selected.name,
       user_uid: user.uid,
     });
     toast.success("Successfully created evaluation!");
-  }
-
-  async function insertCategory() {
-    const docRef = await addDoc(collection(db, "categories"), {
-      category: category.current.value,
-      user_uid: user.uid,
-    });
-    toast.success("Successfully created category!");
-    setIsOpen(false);
   }
 
   return (
@@ -278,7 +264,7 @@ export default function CreateForm() {
                               </Listbox.Button>
                               <div className="border-t border-gray-600 my-2" />
 
-                              {people.map((person, personIdx) => (
+                              {categories.map((person, personIdx) => (
                                 <Listbox.Option
                                   key={personIdx}
                                   className={({ active }) =>
@@ -341,7 +327,7 @@ export default function CreateForm() {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-20"
           onClose={() => setIsOpen(false)}
         >
           <Transition.Child
@@ -380,7 +366,10 @@ export default function CreateForm() {
                         type="text"
                         name="category-title"
                         id="category-title"
-                        ref={category}
+                        onChange={(e) => {
+                          console.log(e.currentTarget.value);
+                          setCategoryText(e.currentTarget.value);
+                        }}
                         className="block w-full flex-1 text-white rounded-md bg-slate-700 border border-slate-600 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         placeholder="Your category title...."
                       />
@@ -390,7 +379,7 @@ export default function CreateForm() {
                   <div className="mt-4 justify-end flex space-x-3">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => setIsOpen(false)}
                     >
                       Cancel
@@ -398,9 +387,12 @@ export default function CreateForm() {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={insertCategory}
+                      onClick={() => {
+                        categories.push({ name: categoryText });
+                        setIsOpen(false);
+                      }}
                     >
-                      Create category
+                      Add category
                     </button>
                   </div>
                 </Dialog.Panel>
