@@ -27,6 +27,8 @@ export default function CreateForm() {
 
   const title = useRef();
   const about = useRef();
+  const question = useRef();
+  ///const category = useRef();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -41,10 +43,14 @@ export default function CreateForm() {
   async function insertEvaluation() {
     console.log("title:", title.current.value);
     console.log("about:", about.current.value);
+    console.log("question:", question.current.value);
+    ///console.log("category:", category.current.value);
 
     const docRef = await addDoc(collection(db, "evaluations"), {
       title: title.current.value,
       about: about.current.value,
+      question: question.current.value,
+      ///category: category.current.value,
       user_uid: user.uid,
     });
     toast.success("Successfully created evaluation!");
@@ -58,7 +64,7 @@ export default function CreateForm() {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-200">
-                Profile
+                Evaluation Form Profile
               </h3>
               <p className="mt-1 text-sm text-gray-400">
                 This information will be displayed publicly so be careful what
@@ -108,7 +114,7 @@ export default function CreateForm() {
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
-                      Brief description for your survey.
+                      Here u can write the description of the evaluation form.
                     </p>
                   </div>
 
@@ -195,6 +201,7 @@ export default function CreateForm() {
                       id="title"
                       autoComplete="given-name"
                       className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      ref={question}
                     />
                   </div>
 
@@ -307,6 +314,11 @@ export default function CreateForm() {
                 </button>
               </div>
             </div>
+          </div>
+          <div class="flex">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ">
+              Button
+            </button>
           </div>
         </div>
       </div>
