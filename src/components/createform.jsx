@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Listbox, Transition, Dialog } from "@headlessui/react";
 import { onAuthStateChanged } from "firebase/auth";
+import { storage } from "firebase/storage";
 import { auth } from "../firebase";
 import {
   CheckIcon,
@@ -26,6 +27,7 @@ export default function CreateForm() {
   const [user, setUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [categoryText, setCategoryText] = useState(null);
+  const [image, setImage] = useState(null);
 
   const title = useRef();
   const about = useRef();
@@ -41,13 +43,31 @@ export default function CreateForm() {
     });
   }, []);
 
+  function handleImageChange(event) {
+    setImage(event.target.files[0]);
+  }
+
+  async function handleImageUpload() {
+    if (!image) {
+      return;
+    }
+
+    const storageRef = storage().ref();
+    const imageRef = storageRef.child(`images/${image.name}`);
+    const snapshot = await imageRef.put(image);
+    const imageURL = await snapshot.ref.getDownloadURL();
+    return imageURL;
+  }
+
   async function insertEvaluation() {
+    const imageURL = await handleImageUpload();
     const docRef = await addDoc(collection(db, "evaluations"), {
       title: title.current.value,
       about: about.current.value,
       question: question.current.value,
       category: selected.name,
       user_uid: user.uid,
+      image: imageURL,
     });
     toast.success("Successfully created evaluation!");
   }
@@ -144,7 +164,9 @@ export default function CreateForm() {
                               id="file-upload"
                               name="file-upload"
                               type="file"
+                              accept="image/jpeg, image/png, image/gif"
                               className="sr-only"
+                              onChange={handleImageChange}
                             />
                           </label>
                           <p className="pl-1">or drag and drop</p>
