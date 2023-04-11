@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 
 export default function EvaluationBox() {
   return (
-    <section className="bg-white dark:bg-slate-700">
+    <section className=" dark:bg-slate-700">
       <div className="container px-6 py-10 mx-auto">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
+          <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
             Existing evaluations
           </h1>
 
-          <p className="max-w-lg mx-auto mt-4 text-gray-500">
+          <p className="max-w-lg mx-auto mt-4 text-white">
             Here you can view the existing evaluations.
           </p>
         </div>
@@ -30,7 +30,7 @@ export default function EvaluationBox() {
                   alt=""
                 />
 
-                <div className="mx-4">
+                <div className="mx-4 ">
                   <h1 className="text-sm text-gray-700 dark:text-gray-200">
                     Gebruiker
                   </h1>
@@ -39,24 +39,20 @@ export default function EvaluationBox() {
                   </p>
                 </div>
               </div>
-            </div>
-
-            <h1 className="mt-6 text-xl font-semibold text-gray-800 dark:text-white">
+            </div> 
+              <div className="my-2">
+              <a 
+            href= "#"
+            className="mt-6 text-xl font-semibold text-white dark:text-white hover:text-blue-400">
               Titel evaluatie
-            </h1>
+            </a>
 
-            <hr className="w-32 my-6 text-blue-500" />
+            <hr className="w-32 my-4 text-blue-500" />
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
               beschrijving
-            </p>
-
-            <a
-              href="#"
-              className="inline-block mt-4 text-blue-500 underline hover:text-blue-400"
-            >
-              Evaluation
-            </a>
+            </p>  
+              </div>
           </div>
 
           <div>
@@ -85,22 +81,19 @@ export default function EvaluationBox() {
               </div>
             </div>
 
-            <h1 className="mt-6 text-xl font-semibold text-gray-800 dark:text-white">
+            <div className="my-2">
+              <a 
+            href= "#"
+            className="mt-6 text-xl font-semibold text-white dark:text-white hover:text-blue-400">
               Titel evaluatie
-            </h1>
+            </a>
 
-            <hr className="w-32 my-6 text-blue-500" />
+            <hr className="w-32 my-4 text-blue-500" />
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
               beschrijving
-            </p>
-
-            <a
-              href="#"
-              className="inline-block mt-4 text-blue-500 underline hover:text-blue-400"
-            >
-              Evaluation
-            </a>
+            </p>  
+              </div>
           </div>
 
           <div>
@@ -129,22 +122,20 @@ export default function EvaluationBox() {
               </div>
             </div>
 
-            <h1 className="mt-6 text-xl font-semibold text-gray-800 dark:text-white">
+            <div className="my-2">
+              <a 
+            href= "#"
+            className="mt-6 text-xl font-semibold text-white dark:text-white hover:text-blue-400">
               Titel evaluatie
-            </h1>
+            </a>
 
-            <hr className="w-32 my-6 text-blue-500" />
+            <hr className="w-32 my-4 text-blue-500" />
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
               beschrijving
-            </p>
+            </p>  
+              </div>
 
-            <a
-              href="#"
-              className="inline-block mt-4 text-blue-500 underline hover:text-blue-400"
-            >
-              Evaluation
-            </a>
           </div>
         </div>
       </div>
