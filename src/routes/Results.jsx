@@ -3,6 +3,7 @@ import Header from "../components/header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
+import ResultBox from "../components/resultbox";
 
 export default function Home() {
     const [loggedIn, setLoggedIn] = useState(false);

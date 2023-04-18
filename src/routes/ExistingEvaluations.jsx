@@ -26,10 +26,11 @@ export default function ExistingEvaluations() {
         <div className="max-w-xs">
           <Sidebar />
         </div>
-
+        
         <div className="p-8 w-full">
           <EvaluationBox />
         </div>
+       
       </div>
     </div>
   );
