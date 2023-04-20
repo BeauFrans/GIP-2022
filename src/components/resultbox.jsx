@@ -4,15 +4,7 @@ export default function ResultBox() {
   return (
 <div className="p-8 w-full">
                     
-                    <div className="text-center mt-6">
-                        <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
-                            Results
-                        </h1>
-
-                    <p className="max-w-lg mx-auto mt-4 text-white">
-                        Here you can view your results
-                    </p>
-                    </div>
+                    
                         <div className="relative top-10">
                         <a href="" className="group static block h-40 w-96">
                             <span className="inset-0"></span>

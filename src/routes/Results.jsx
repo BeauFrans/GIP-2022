@@ -28,7 +28,26 @@ export default function Home() {
                 </div>
 
                 <div className="p-8 w-full">
-                    <ResultBox />
+                    <div className="text-center mt-6">
+                        <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
+                            Results
+                        </h1>
+
+                        <p className="max-w-lg mx-auto mt-4 text-white">
+                            Here you can view your results
+                        </p>
+                    </div>
+                    <div className="grid grid-flow-cols grid-cols-2 ml-24 border-t-2 mt-4">
+                        <ResultBox />
+                        <ResultBox />
+                        <ResultBox />
+                        <ResultBox /> 
+                        <ResultBox /> 
+                        <ResultBox /> 
+                        <ResultBox /> 
+                        <ResultBox /> 
+                    </div>
+                    
                 </div>
             </div>
         </div>
