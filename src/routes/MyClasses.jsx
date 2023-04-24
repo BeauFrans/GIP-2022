@@ -25,7 +25,7 @@ export default function Home() {
         <div className="max-w-xs">
           <Sidebar />
         </div>
-        <div className="p-8 w-full">
+        <div className="p-8 w-full max-h-screen overflow-auto">
           <nav aria-label="Breadcrumb" className="flex">
             <ol
               role="list"
@@ -51,10 +51,7 @@ export default function Home() {
                     />
                   </svg>
 
-                  <span className="ml-1.5 text-xs font-medium">
-                    {" "}
-                    My Classes{" "}
-                  </span>
+                  <span className="ml-1.5 text-xs font-medium">My Classes</span>
                 </a>
               </li>
 
