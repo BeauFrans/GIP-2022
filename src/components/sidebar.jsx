@@ -63,7 +63,7 @@ export default function Sidebar() {
                 />
               </svg>
 
-              <span className="ml-3 text-sm font-medium"> My evaluations </span>
+              <span className="ml-3 text-sm font-medium"> Evaluations </span>
 
               <span className="ml-auto shrink-0 transition duration-300 group-open:-rotate-180">
                 <svg
@@ -268,7 +268,6 @@ export default function Sidebar() {
       </div>
 
       <div className="sticky inset-x-0 bottom-0">
-        <img src="/wave-haikei.svg" alt="Wave" />
         <a
           href="#"
           className="flex shrink-0 items-center bg-slate-700 p-4 hover:bg-slate-600 text-gray-200"

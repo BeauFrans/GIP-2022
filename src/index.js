@@ -11,6 +11,7 @@ import Reset from "./routes/Reset";
 import Results from "./routes/Results";
 import SettingsAccount from "./routes/SettingsAccount";
 import Signup from "./routes/Signup";
+import FillEvaluations from "./routes/FillEvaluations";
 
 import "./styles/index.css";
 
@@ -28,6 +29,7 @@ render(
       <Route path="/results" element={<Results />} />
       <Route path="/settingsaccount" element={<SettingsAccount />} />
       <Route path="/not-logged-in" element={<NotLoggedIn />} />
+      <Route path="/fill-evaluation" element={<FillEvaluations />} />
     </Routes>
   </BrowserRouter>,
   rootElement
