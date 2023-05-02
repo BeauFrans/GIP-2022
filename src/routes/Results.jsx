@@ -39,13 +39,6 @@ export default function Home() {
           </div>
           <div className="grid grid-flow-cols grid-cols-2 ml-24 border-t-2 mt-4">
             <ResultBox />
-            <ResultBox />
-            <ResultBox />
-            <ResultBox />
-            <ResultBox />
-            <ResultBox />
-            <ResultBox />
-            <ResultBox />
           </div>
         </div>
       </div>
