@@ -7,7 +7,7 @@ export default function ResultBox() {
         <a href="" className="group static block h-40 w-96">
           <span className="inset-0"></span>
 
-          <div className="relative flex h-full bg-slate-700 rounded-md border-2 border-white">
+          <div className="relative flex h-full bg-slate-800 rounded-md ">
             <div className="p-4 !pt-0 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 lg:p-8">
               <h2 className="mt-6 text-xl font-medium sm:text-2xl text-white">
                 Titel / Leerkracht

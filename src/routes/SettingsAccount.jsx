@@ -27,27 +27,8 @@ export default function Home() {
           <Sidebar />
         </div>
         <div className="w-4/5 mx-auto">
-          <div className="content flex flex-col w-4/5">
-            <div className="flex items-center">
-              <div className="p-8 w-2/5">
-                <label for="UserEmail" class="text-white">
-                  Geef hier je nieuwe E-mail in
-                </label>
-                <input
-                  id="UserEmail"
-                  placeholder="kobe.vervaele2@gmail.com"
-                  class="w-full rounded-md bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
-                />
-              </div>
-              <div className="p-8 w-2/5">
-                <label for="UserEmail" class="text-white">
-                  Geef hier je klas is
-                </label>
-                <DropdownMenu />
-              </div>
-            </div>
-
-            <div className="p-8 w-2/5">
+          <div className="content w-4/5 flex flex-row">
+            <div className="p-8 w-2/5 y flex flex-col ">
               <label for="UserName" class="text-white">
                 Geef hier je voornaam in
               </label>
@@ -56,18 +37,27 @@ export default function Home() {
                 placeholder="naam"
                 class=" w-full rounded-md bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
               />
-
-              <label for="UserLName" class="text-white ">
-                Geef hier je achternaam in
-              </label>
-              <input
-                id="UserLName"
-                placeholder="familie naam"
-                class=" w-full rounded-md bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
-              />
+              <div className="mt-4">
+                <label for="UserLName" class="text-white ">
+                  Geef hier je achternaam in
+                </label>
+                <input
+                  id="UserLName"
+                  placeholder="familie naam"
+                  class=" w-full rounded-md bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
+                />
+              </div>
               <button className="bg-blue-700 text-white py-2 px-5 rounded-full font-semibold ml-1 hover:bg-blue-600 w-32 b-0 l-0 mt-11">
                 Submit
               </button>
+            </div>
+            <div className="flex w-full">
+              <div className="p-8 w-2/5">
+                <label for="UserEmail" class="text-white ">
+                  Geef hier je klas is
+                </label>
+                <DropdownMenu />
+              </div>
             </div>
           </div>
         </div>
