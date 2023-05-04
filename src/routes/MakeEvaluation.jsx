@@ -22,13 +22,13 @@ export default function MakeEvaluation() {
   }, []);
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="h-screen w-screen overflow-y-scroll">
       <Header />
       <div className="flex h-screen justify-between">
         <div className="max-w-sm">
           <Sidebar />
         </div>
-        <div className="w-full overflow-y-auto flex-row flex p-8 bg-slate-700">
+        <div className="w-full flex-row flex p-8 bg-slate-700">
           <CreateForm />
         </div>
       </div>

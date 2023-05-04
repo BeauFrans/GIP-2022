@@ -12,7 +12,7 @@ import Results from "./routes/Results";
 import SettingsAccount from "./routes/SettingsAccount";
 import Signup from "./routes/Signup";
 import FillEvaluations from "./routes/FillEvaluations";
-
+import OneA from "./routes/OneA";
 import "./styles/index.css";
 
 const rootElement = document.getElementById("root");
@@ -30,6 +30,7 @@ render(
       <Route path="/settingsaccount" element={<SettingsAccount />} />
       <Route path="/not-logged-in" element={<NotLoggedIn />} />
       <Route path="/fill-evaluation" element={<FillEvaluations />} />
+      <Route path="/1A" element = {<OneA />} />
     </Routes>
   </BrowserRouter>,
   rootElement

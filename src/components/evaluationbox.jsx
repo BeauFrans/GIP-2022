@@ -6,7 +6,7 @@ export default function EvaluationBox(props) {
       <div className="container px-6 py-10 mx-auto">
         <div className="relative">
           <img
-            className="object-cover object-center w-full h-64 rounded-lg lg:h-80"
+            className=" object-cover object-center w-80 h-64 rounded-lg lg:h-80"
             src={props.image}
             alt={props.title}
           />
