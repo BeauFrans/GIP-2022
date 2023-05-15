@@ -4,7 +4,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
 import EvaluationBox from "../components/evaluationbox";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function ExistingEvaluations() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -18,18 +25,40 @@ export default function ExistingEvaluations() {
         setLoggedIn(true);
 
         setUser(user);
-        const q = query(
-          collection(db, "evaluations"),
-          where("user_uid", "==", user.uid)
-        );
+
+        // Give me the klas property of the user with the uid of the current user (user.uid) from the gebruikerinfo collection in the database
+        const colRef = collection(db, "gebruikerinfo");
+
+        const q = query(colRef, where("user_uid", "==", user.uid));
 
         const querySnapshot = await getDocs(q);
+
+        let klas;
+
         querySnapshot.forEach((doc) => {
+          klas = doc.data().klas || null;
+        });
+
+        // Get all evaluations where the klas property is equal to the klas property of the current user
+        const q2 = query(
+          collection(db, "evaluations"),
+          where("klas", "==", klas)
+        );
+
+        const querySnapshot2 = await getDocs(q2);
+
+        querySnapshot2.forEach((doc) => {
           setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
           console.log(doc.id, " => ", doc.data());
         });
 
-        console.log(evaluations);
+        // const querySnapshot = await getDocs(q);
+        // querySnapshot.forEach((doc) => {
+        //   setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
+        //   console.log(doc.id, " => ", doc.data());
+        // });
+
+        // console.log(evaluations);
       } else {
         window.location.replace("/not-logged-in");
       }

@@ -250,10 +250,7 @@ export default function Sidebar() {
                   />
                 </svg>
 
-                <span className="ml-3 text-sm font-medium">
-                  {" "}
-                  Account Settings{" "}
-                </span>
+                <span className="ml-3 text-sm font-medium"> Klas Kiezen </span>
               </a>
 
               <a

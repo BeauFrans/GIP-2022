@@ -65,6 +65,7 @@ export default function CreateForm() {
 
   const title = useRef();
   const about = useRef();
+  const klas = useRef();
   const question = useRef();
   const storage = getStorage();
 
@@ -92,6 +93,10 @@ export default function CreateForm() {
   }
 
   async function insertEvaluation() {
+    if (image === null) {
+      toast.error("Please upload an image!");
+      return;
+    }
     const storageRef = ref(storage, `uploads/${uuidv4() + image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
 
@@ -110,6 +115,7 @@ export default function CreateForm() {
             category: selected.name,
             user_uid: user.uid,
             image: downloadURL,
+            klas: klas.current.value,
           });
           toast.success("Successfully created evaluation!");
         });
@@ -133,19 +139,6 @@ export default function CreateForm() {
                   you share.
                 </p>
               </div>
-              <div className="mt-11 flex flex-col gap-y-4">
-                {Array.from({ length: componentCount }).map((_, index) => (
-                  <DropdownMenu key={index} />
-                ))}
-
-                <button
-                  onClick={fixClick}
-                  className="absolute font-thin inline-flex ml-80 w-24 h-10 justify-center space-x-2 items-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  <PlusIcon className=" text-white  " />
-                  <p>Nieuwe klas</p>
-                </button>
-              </div>
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
@@ -168,6 +161,24 @@ export default function CreateForm() {
                           ref={title}
                           className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                           placeholder="Your title...."
+                        />
+                      </div>
+                    </div>
+                    <div className="col-span-3 sm:col-span-2">
+                      <label
+                        htmlFor="klas-title"
+                        className="block text-sm font-medium text-gray-300"
+                      >
+                        Klas
+                      </label>
+                      <div className="mt-1 flex rounded-md shadow-sm">
+                        <input
+                          type="text"
+                          name="klas-title"
+                          id="klas-title"
+                          ref={klas}
+                          className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                          placeholder="Your klas...."
                         />
                       </div>
                     </div>
