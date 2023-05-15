@@ -175,6 +175,14 @@ export default function Home() {
                 Submit
               </button>
             </div>
+            <div className="flex w-full">
+              <div className="p-8 w-2/5">
+                <label for="UserEmail" class="text-white ">
+                  Geef hier je klas is
+                </label>
+                <DropdownMenu />
+              </div>
+            </div>
           </div>
         </div>
       </div>

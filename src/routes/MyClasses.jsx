@@ -1,10 +1,61 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 
-export default function Home() {
+const jaren = [
+  {
+    name: "Jaar 1",
+    klassen: [
+      { klas: "1A", href: "/1A" },
+      { klas: "1B", href: "/1B" },
+      { klas: "1C", href: "/1C" },
+    ],
+  },
+  {
+    name: "Jaar 2",
+    klassen: [
+      { klas: "2A", href: "/2A" },
+      { klas: "2B", href: "/2B" },
+      { klas: "2C", href: "/2C" },
+    ],
+  },
+  {
+    name: "Jaar 3",
+    klassen: [
+      { klas: "3A", href: "/3A" },
+      { klas: "3B", href: "/3B" },
+      { klas: "3C", href: "/3C" },
+    ],
+  },
+  {
+    name: "Jaar 4",
+    klassen: [
+      { klas: "4A", href: "/4A" },
+      { klas: "4B", href: "/4B" },
+      { klas: "4C", href: "/4C" },
+    ],
+  },
+  {
+    name: "Jaar 5",
+    klassen: [
+      { klas: "5A", href: "/5A" },
+      { klas: "5B", href: "/5B" },
+      { klas: "5C", href: "/5C" },
+    ],
+  },
+  {
+    name: "Jaar 6",
+    klassen: [
+      { klas: "6A", href: "/6A" },
+      { klas: "6B", href: "/6B" },
+      { klas: "6C", href: "/6C" },
+    ],
+  },
+];
+
+function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -25,43 +76,33 @@ export default function Home() {
         <div className="max-w-xs">
           <Sidebar />
         </div>
-        <div className="p-8 w-full max-h-screen overflow-auto">
-          <nav aria-label="Breadcrumb" className="flex">
-            <ol
-              role="list"
-              className="flex overflow-hidden rounded-lg border-none bg-blue-700 text-white"
-            >
-              <li className="flex items-center">
-                <a
-                  href="#"
-                  className="flex h-10 items-center bg-transparent border-blue-700 px-4 transition "
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                    />
-                  </svg>
-
-                  <span className="ml-1.5 text-xs font-medium">My Classes</span>
-                </a>
-              </li>
-
-              <li className="relative flex items-center">
-                <span className="absolute inset-y-0 -left-px h-10 w-4 bg-blue-700  [clip-path:_polygon(0_0,_0%_100%,_100%_50%)]"></span>
-              </li>
-            </ol>
-          </nav>
+        <div className="p-8 w-full">
+          <div className="relative top-10 flex flex-row">
+            {jaren.map((jaar) => (
+              <div key={jaar.name} className="mb-4 text-white">
+                <h2 className="text-lg font-bold mb-2">{jaar.name}</h2>
+                <div className="flex flex-wrap">
+                  {jaar.klassen.map((klas) => (
+                    <a
+                      key={klas.klas}
+                      href={klas.href}
+                      className="block h-10 w-32 mr-2 mb-2"
+                    >
+                      <div className="flex h-full bg-slate-800 rounded-md justify-between">
+                        <h2 className="text-l font-small sm:text-2xl text-white w-full text-center mt-1">
+                          {klas.klas}
+                        </h2>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default Home;

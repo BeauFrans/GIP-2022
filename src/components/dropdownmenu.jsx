@@ -39,14 +39,14 @@ const DropdownMenu = () => {
   return (
     <div className="relative">
       <button
-        className="w-16 rounded-md bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
+        className="w-16 rounded-md z-20 bg-slate-800 px-3 py-2 shadow-sm focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm text-gray-200"
         onClick={toggleDropdown}
       >
         {klasButtonText}
       </button>
 
       {isOpen && (
-        <div className="absolute top-0 left-0 bg-slate-800 mt-10 py-2 w-48 shadow-lg rounded-lg">
+        <div className="absolute top-0 left-0 bg-slate-800 mt-10 py-2 w-48 shadow-lg rounded-lg z-20">
           {jaren.map((jaar) => (
             <button
               className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 w-full text-left"
@@ -60,7 +60,7 @@ const DropdownMenu = () => {
       )}
 
       {isOpen1 && (
-        <div className="absolute mt-10 top-0 left-0 ml-52 bg-slate-800 py-2 w-48 shadow-lg rounded-lg">
+        <div className="absolute mt-10 top-0 left-0 ml-52 bg-slate-800 py-2 w-48 shadow-lg rounded-lg z-30">
           {klassen.map((klas) => (
             <button
               className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 w-full text-left"

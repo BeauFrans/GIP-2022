@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 import CreateForm from "../components/createform";
+import DropdownMenu from "../components/dropdownmenu";
 
 export default function MakeEvaluation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,13 +22,13 @@ export default function MakeEvaluation() {
   }, []);
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="h-screen w-screen overflow-y-scroll">
       <Header />
       <div className="flex h-screen justify-between">
         <div className="max-w-sm">
           <Sidebar />
         </div>
-        <div className="w-full overflow-y-auto p-8 bg-slate-700">
+        <div className="w-full flex-row flex p-8 bg-slate-700">
           <CreateForm />
         </div>
       </div>

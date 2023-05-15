@@ -13,7 +13,6 @@ import SettingsAccount from "./routes/SettingsAccount";
 import Signup from "./routes/Signup";
 import FillEvaluations from "./routes/FillEvaluations";
 
-
 import "./styles/index.css";
   
 const rootElement = document.getElementById("root");

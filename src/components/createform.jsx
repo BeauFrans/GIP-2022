@@ -18,6 +18,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import DropdownMenu from "./dropdownmenu";
 
 const categories = [
   { name: "Communicatie" },
@@ -66,6 +67,11 @@ export default function CreateForm() {
   const about = useRef();
   const question = useRef();
   const storage = getStorage();
+
+  const [componentCount, setComponentCount] = useState(1);
+  const fixClick = () => {
+    setComponentCount(componentCount + 1);
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -118,13 +124,28 @@ export default function CreateForm() {
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-200">
-                Evaluation Form Profile
-              </h3>
-              <p className="mt-1 text-sm text-gray-400">
-                This information will be displayed publicly so be careful what
-                you share.
-              </p>
+              <div>
+                <h3 className="text-lg font-medium leading-6 text-gray-200">
+                  Evaluation Form Profile
+                </h3>
+                <p className="mt-1 text-sm text-gray-400">
+                  This information will be displayed publicly so be careful what
+                  you share.
+                </p>
+              </div>
+              <div className="mt-11 flex flex-col gap-y-4">
+                {Array.from({ length: componentCount }).map((_, index) => (
+                  <DropdownMenu key={index} />
+                ))}
+
+                <button
+                  onClick={fixClick}
+                  className="absolute font-thin inline-flex ml-80 w-24 h-10 justify-center space-x-2 items-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  <PlusIcon className=" text-white  " />
+                  <p>Nieuwe klas</p>
+                </button>
+              </div>
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
