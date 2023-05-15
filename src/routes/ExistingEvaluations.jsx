@@ -25,7 +25,7 @@ export default function ExistingEvaluations() {
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          setEvaluations((prev) => [...prev, doc.data()]);
+          setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
           console.log(doc.id, " => ", doc.data());
         });
 
@@ -59,6 +59,7 @@ export default function ExistingEvaluations() {
               return (
                 <EvaluationBox
                   title={evaluation.title}
+                  id={evaluation.id}
                   about={evaluation.about}
                   image={evaluation.image}
                   user_image={user.photoURL}

@@ -30,7 +30,7 @@ export default function EvaluationBox(props) {
         </div>
         <div className="my-2">
           <a
-            href="/Fill-Evaluation"
+            href={"/fill-evaluation/" + props.id}
             className="mt-6 text-xl font-semibold text-white dark:text-white hover:text-blue-400"
           >
             {props.title}
