@@ -3,6 +3,7 @@ import Header from "../components/header";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
+import toast, { Toaster } from "react-hot-toast";
 import {
   doc,
   addDoc,
@@ -80,7 +81,7 @@ export default function Home() {
           klas: selectedKlas.klas,
           user_uid: auth.currentUser.uid,
         });
-        console.log("Document successfully written with ID: ", docRef.id);
+        toast.success("Successfully created evaluation!");
       } catch (error) {
         console.error("Error writing document: ", error);
       }

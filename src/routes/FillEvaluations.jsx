@@ -92,8 +92,8 @@ export default function FillEvaluation() {
               />
             </svg>
           </button>
-
-          <Experiencebox />
+          
+          
         </div>
       </div>
     </div>
