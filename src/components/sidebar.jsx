@@ -19,7 +19,7 @@ export default function Sidebar() {
         const q = query(
           gebruikerCollection,
           where("rol", "==", "leerkracht"),
-          where("uid", "==", user.uid)
+          where("user_uid", "==", user.uid)
         );
 
         const doc = await getDocs(q);

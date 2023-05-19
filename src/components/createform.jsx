@@ -124,7 +124,7 @@ export default function CreateForm() {
   }
 
   return (
-    <div>
+    <div className="overflow-y-scroll">
       <Toaster />
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
