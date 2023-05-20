@@ -11,7 +11,7 @@ export default function EvaluationBox(props) {
             alt={props.title}
           />
 
-          <div className="absolute bottom-0 flex p-3 bg-white dark:bg-gray-900 ">
+          <div className="absolute bottom-0 flex p-3 bg-gray-900 ">
             <img
               className="object-cover object-center w-10 h-10 rounded-full"
               src={props.user_image}

@@ -18,7 +18,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
-import DropdownMenu from "./dropdownmenu";
 
 const categories = [
   { name: "Communicatie" },
@@ -69,11 +68,6 @@ export default function CreateForm() {
   const question = useRef();
   const storage = getStorage();
 
-  const [componentCount, setComponentCount] = useState(1);
-  const fixClick = () => {
-    setComponentCount(componentCount + 1);
-  };
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -108,7 +102,7 @@ export default function CreateForm() {
       },
       async () => {
         await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const docRef = addDoc(collection(db, "evaluations"), {
+          addDoc(collection(db, "evaluations"), {
             title: title.current.value,
             about: about.current.value,
             questions: inputValues,
@@ -126,6 +120,7 @@ export default function CreateForm() {
   return (
     <div className="overflow-y-scroll">
       <Toaster />
+
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -211,7 +206,7 @@ export default function CreateForm() {
                     </label>
                     <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-slate-500 px-6 pt-5 pb-6">
                       {image ? (
-                        <img src={preview} alt="Image name" />
+                        <img src={preview} alt="Preview " />
                       ) : (
                         <div className="space-y-1 text-center">
                           <svg
