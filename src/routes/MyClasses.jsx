@@ -1,46 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
-
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
-
-const jaren = [
-  {
-    name: "Jaar 1",
-    klassen: [{ klas: "1A" }, { klas: "1B" }, { klas: "1C" }],
-  },
-  {
-    name: "Jaar 2",
-    klassen: [{ klas: "2A" }, { klas: "2B" }, { klas: "2C" }],
-  },
-  {
-    name: "Jaar 3",
-    klassen: [{ klas: "3A" }, { klas: "3B" }, { klas: "3C" }],
-  },
-  {
-    name: "Jaar 4",
-    klassen: [{ klas: "4A" }, { klas: "4B" }, { klas: "4C" }],
-  },
-  {
-    name: "Jaar 5",
-    klassen: [{ klas: "5A" }, { klas: "5B" }, { klas: "5C" }],
-  },
-  {
-    name: "Jaar 6",
-    klassen: [{ klas: "6A" }, { klas: "6B" }, { klas: "6C" }],
-  },
-];
 
 function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [classMembers, setClassMembers] = useState([]);
+  const [customClassName, setCustomClassName] = useState("");
+  const [classes, setClasses] = useState([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Gebruiker ingelogd
         setLoggedIn(true);
       } else {
         window.location.replace("/not-logged-in");
@@ -49,7 +22,6 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Haal de leden van de geselecteerde klas op uit de database
     if (selectedClass) {
       const classRef = db.ref("gebruikerinfo");
       classRef
@@ -65,16 +37,89 @@ function Home() {
         });
 
       return () => {
-        classRef.off(); // Stop met het luisteren naar wijzigingen in de database
+        classRef.off();
       };
     } else {
-      // Als er geen klas is geselecteerd, wis de ledenlijst
       setClassMembers([]);
     }
   }, [selectedClass]);
 
+  useEffect(() => {
+    const classesRef = db.ref("klassen");
+    classesRef.on("value", (snapshot) => {
+      const classesData = snapshot.val();
+      if (classesData) {
+        const classesArray = Object.values(classesData);
+        setClasses(classesArray);
+      } else {
+        setClasses([]);
+      }
+    });
+
+    return () => {
+      classesRef.off();
+    };
+  }, []);
+
   const handleClassClick = (klas) => {
     setSelectedClass(klas);
+  };
+
+  const addCustomClass = () => {
+    if (customClassName) {
+      const newClass = { name: customClassName, klassen: [] };
+      db.ref("klassen").push(newClass);
+      setCustomClassName("");
+      if (selectedClass) {
+        const selectedClassObj = classes.find(
+          (klas) => klas.name === selectedClass
+        );
+        if (selectedClassObj) {
+          selectedClassObj.klassen.push(customClassName);
+          setSelectedClass(null);
+          setSelectedClass(selectedClass); // Trigger re-render
+        }
+      }
+    }
+  };
+
+  const handleMemberClick = (member) => {
+    if (selectedClass) {
+      const classRef = db.ref("gebruikerinfo");
+      classRef
+        .orderByChild("name")
+        .equalTo(member)
+        .once("value", (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const memberId = childSnapshot.key;
+            const memberData = childSnapshot.val();
+
+            // Implement logic to add or remove member from the selected class
+            const selectedClassRef = db.ref(`klassen/${selectedClass}/klassen`);
+            selectedClassRef.once("value", (classSnapshot) => {
+              const classData = classSnapshot.val();
+
+              if (classData && classData.includes(member)) {
+                // Member exists in the selected class, remove them
+                const updatedClassData = classData.filter(
+                  (klasItem) => klasItem !== member
+                );
+                selectedClassRef.set(updatedClassData);
+              } else {
+                // Member doesn't exist in the selected class, add them
+                const updatedClassData = classData
+                  ? [...classData, member]
+                  : [member];
+                selectedClassRef.set(updatedClassData);
+              }
+            });
+
+            // You can also update the member's class information in the user's node
+            const memberRef = db.ref(`gebruikerinfo/${memberId}`);
+            memberRef.update({ klas: selectedClass });
+          });
+        });
+    }
   };
 
   return (
@@ -86,21 +131,45 @@ function Home() {
         </div>
         <div className="p-8 w-full">
           <div className="relative top-10 flex flex-row">
-            {jaren.map((jaar) => (
-              <div key={jaar.name} className="mb-4 text-white">
-                <button className="text-lg font-bold mb-2">{jaar.name}</button>
+            {/* Input to add a custom class */}
+            <div className="mb-4 text-white">
+              <input
+                type="text"
+                value={customClassName}
+                onChange={(e) => setCustomClassName(e.target.value)}
+                placeholder="Enter class name"
+                className="text-lg font-bold mb-2"
+              />
+              <button
+                className="text-lg font-bold mb-2"
+                onClick={addCustomClass}
+              >
+                Add Custom Class
+              </button>
+            </div>
+            {/* Display existing classes */}
+            {classes.map((klas) => (
+              <div key={klas.name} className="mb-4 text-white">
+                <button
+                  className={`text-lg font-bold mb-2 ${
+                    selectedClass === klas.name ? "bg-blue-500" : ""
+                  }`}
+                  onClick={() => handleClassClick(klas.name)}
+                >
+                  {klas.name}
+                </button>
                 <div className="flex flex-wrap">
-                  {jaar.klassen.map((klas) => (
+                  {klas.klassen.map((klasItem) => (
                     <button
-                      key={klas.klas}
+                      key={klasItem}
                       className={`block h-10 w-32 mr-2 mb-2 ${
-                        selectedClass === klas.klas ? "bg-blue-500" : ""
+                        selectedClass === klasItem ? "bg-blue-500" : ""
                       }`}
-                      onClick={() => handleClassClick(klas.klas)}
+                      onClick={() => handleClassClick(klasItem)}
                     >
                       <div className="flex h-full bg-slate-800 rounded-md justify-between">
                         <h2 className="text-l font-small sm:text-2xl text-white w-full text-center mt-1">
-                          {klas.klas}
+                          {klasItem}
                         </h2>
                       </div>
                     </button>
@@ -109,16 +178,21 @@ function Home() {
               </div>
             ))}
           </div>
-          {selectedClass && classMembers.length > 0 && (
-            <div className="mt-4 text-white">
-              <h2 className="text-lg font-bold mb-2">{selectedClass}</h2>
-              <ul>
-                {classMembers.map((member) => (
-                  <li key={member}>{member}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+
+          <div className="mt-4 text-white">
+            <h2 className="text-lg font-bold mb-2">{selectedClass}</h2>
+            <ul>
+              {classMembers.map((member) => (
+                <li
+                  key={member}
+                  onClick={() => handleMemberClick(member)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {member}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
