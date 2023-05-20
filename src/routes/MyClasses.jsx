@@ -40,6 +40,16 @@ function Home() {
       leerlingen: [],
     });
 
+    setClasses((prev) => [
+      ...prev,
+      {
+        name: klasInput.current.value,
+        date: new Date().toLocaleDateString(),
+        updated: new Date().toLocaleDateString(),
+        leerlingen: [],
+      },
+    ]);
+
     toast.success("Class created successfully");
   };
 
