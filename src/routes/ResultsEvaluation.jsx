@@ -1,61 +1,36 @@
 import { useEffect, useState } from "react";
 import Header from "../components/header";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
-import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import StudentResult from "../components/studentresult";
 
-export default function ResultsEvaluation() {
-  const [evaluation, setEvaluation] = useState({});
-  const [name, setName] = useState("");
-  const [userNames, setUserNames] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+export default function Home() {
+  const [results, setResults] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      const antwoordenCollection = collection(db, "antwoorden");
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          // User signed in
-
-          console.log(id);
-
-          const docRef = doc(db, "evaluations", id);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-            setEvaluation(docSnap.data());
-          } else {
-            // docSnap.data() will be undefined in this case
-            console.log("No such document!");
-          }
-        } else {
-          window.location.replace("/not-logged-in");
-        }
-      });
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          setName(user.displayName);
-
-          const q = query(
-            antwoordenCollection,
-            where("userId", ">", ""),
-            where("evaluationId", "===", evaluation.id)
-          );
-
-          const doc = await getDocs(q);
-        }
-      });
-
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User signed in
-        setLoggedIn(true);
+        // Get the document where the id variable is equal to the evaluationId property of the document in the antwoorden collection
+        const q = query(
+          collection(db, "antwoorden"),
+          where("evaluationId", "==", id)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          setResults((results) => [...results, doc.data()]);
+        });
+        console.log(id);
       } else {
         window.location.replace("/not-logged-in");
       }
     });
-  }, []);
+  }, [id]);
 
   return (
     <div className="w-screen h-screen bg-slate-700 overflow-hidden">
@@ -64,8 +39,27 @@ export default function ResultsEvaluation() {
         <div className="max-w-xs">
           <Sidebar />
         </div>
-        <div className="">
-          <h1 className="text-white center">Uploaded List</h1>
+        <div className="w-full ">
+          <section className="bg-slate-700 text-white ">
+            <div className="p-8 w-full max-h-screen overflow-auto">
+              <div className="text-center mt-6">
+                <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
+                  Evaluation results
+                </h1>
+
+                <p className="max-w-lg mx-auto mt-4 text-white">
+                  Here you can see the results of the evaluation, you can see
+                  the results for each student.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+                {results.map((result) => (
+                  <StudentResult {...result} />
+                ))}
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>

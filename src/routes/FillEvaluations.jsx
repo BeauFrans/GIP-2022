@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 export default function FillEvaluation() {
   const [evaluation, setEvaluation] = useState({});
   const [activeQuestion, setActiveQuestion] = useState(0);
-  const [answers, setAnwsers] = useState([]);
+  const [answers, setAnswers] = useState([]);
 
   const { id } = useParams();
 
@@ -41,11 +41,11 @@ export default function FillEvaluation() {
     if (answers[activeQuestion]) {
       const newAnswers = [...answers];
       newAnswers[activeQuestion].answer = rate;
-      setAnwsers(newAnswers);
+      setAnswers(newAnswers);
       return;
     }
 
-    setAnwsers([
+    setAnswers([
       ...answers,
       {
         question: activeQuestion,
@@ -64,9 +64,11 @@ export default function FillEvaluation() {
       answers,
       evaluationId: id,
       userId: auth.currentUser.uid,
+      uploaded_at: new Date().toISOString(),
+      studentName: auth.currentUser.displayName || auth.currentUser.email,
     });
 
-    toast.success("Awnsers uploaded successfully!");
+    toast.success("Answers uploaded successfully!");
     setTimeout(() => {
       window.location.replace("/existingevaluations");
     }, 1000);

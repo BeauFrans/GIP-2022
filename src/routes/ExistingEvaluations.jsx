@@ -4,17 +4,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
 import EvaluationBox from "../components/evaluationbox";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function ExistingEvaluations() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [evaluations, setEvaluations] = useState([]);
 
@@ -22,7 +14,6 @@ export default function ExistingEvaluations() {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User signed in
-        setLoggedIn(true);
 
         setUser(user);
 

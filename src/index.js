@@ -13,6 +13,7 @@ import SettingsAccount from "./routes/SettingsAccount";
 import Signup from "./routes/Signup";
 import FillEvaluations from "./routes/FillEvaluations";
 import ResultsEvaluation from "./routes/ResultsEvaluation";
+import ViewResult from "./routes/ViewResult";
 
 import "./styles/index.css";
   
@@ -32,6 +33,7 @@ render(
       <Route path="/not-logged-in" element={<NotLoggedIn />} />
       <Route path="/fill-evaluation/:id" element={<FillEvaluations />} />
       <Route path="/results-evaluation/:id" element={<ResultsEvaluation  />} />
+      <Route path="/viewresult/:evaluationId/:userId" element={<ViewResult />} />
     </Routes>
   </BrowserRouter>,
   rootElement
