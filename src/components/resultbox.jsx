@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-export default function ResultBox(props) {
+export default function Resultbox(props) {
   return (
-    <div className="p-8 w-full">
-      <div className="relative top-10">
-        <a href="" className="group static block h-40 w-96">
-          <div className="relative flex h-full  bg-slate-800 rounded-md ">
-            <img src={props.image} alt="" />
-            <div className="p-4 !pt-0 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 lg:p-8">
-              <h2 className="mt-6 text-xl font-medium sm:text-2xl text-white">
-                Titel / Leerkracht
-              </h2>
-            </div>
+    <section className=" dark:bg-slate-700">
+      <div className="container px-6 py-10 mx-auto">
+        <div className="relative">
+          <img
+            className=" object-cover object-center w-80 h-64 rounded-lg lg:h-80"
+            src={props.image}
+            alt={props.title}
+          />
 
-            <div className="absolute p-4 opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 sm:p-6 lg:p-8">
-              <h3 className="text-xl font-medium sm:text-2xl text-white">
-                Titel / Leerkracht
-              </h3>
+          <div className="absolute bottom-0 flex p-3 bg-gray-900 ">
+            <img
+              className="object-cover object-center w-10 h-10 rounded-full"
+              src={props.user_image}
+              alt={props.user_name}
+            />
 
-              <p className="text-sm sm:text-base text-white">
-                Feedback op je resultaten van de leerkracht die horen bij deze
-                evaluatie.
+            <div className="mx-4 ">
+              <h1 className="text-sm text-gray-700 dark:text-gray-200">User</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {props.user_name}
               </p>
-
-              <p className="font-bold text-white">Lees meer</p>
             </div>
           </div>
-        </a>
+        </div>
+        <div className="my-2">
+          <a
+            href={"/results-evaluation/" + props.id}
+            className="mt-6 text-xl font-semibold text-white dark:text-white hover:text-blue-400"
+          >
+            {props.title}
+          </a>
+
+          <hr className="w-32 my-4 text-blue-500" />
+
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {props.about}
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
