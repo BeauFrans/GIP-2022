@@ -73,7 +73,7 @@ export default function Home() {
       const userDocRef = querySnapshot.docs[0].ref;
       await updateDoc(userDocRef, { klas: selectedKlas.klas });
       console.log("Document successfully updated!");
-      toast.success("Klas succesvol veranderd!");
+      toast.success("Class successfully updated!");
       setTimeout(() => {
         window.location.replace("/");
       }, 1000);
@@ -84,13 +84,13 @@ export default function Home() {
           klas: selectedKlas.klas,
           user_uid: auth.currentUser.uid,
         });
-        toast.success("Klas succesvol gekozen!");
+        toast.success("Successfully chosen class!");
         setTimeout(() => {
           window.location.replace("/");
         }, 1000);
       } catch (error) {
         console.error("Error writing document: ", error);
-        toast.error("Er is iets fout gegaan!");
+        toast.error("Something went wrong!");
       }
     }
   }
