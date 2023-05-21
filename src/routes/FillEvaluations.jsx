@@ -97,11 +97,11 @@ export default function FillEvaluation() {
                 href="#"
                 className={`px-3 py-1 rounded-md text-sm font-medium ${
                   answers[activeQuestion] &&
-                  answers[activeQuestion].answer === "slecht"
+                  answers[activeQuestion].answer === "bad"
                     ? "text-white bg-indigo-600"
                     : "text-gray-100 bg-gray-700"
                 }`}
-                onClick={() => handleButtonClick("slecht")}
+                onClick={() => handleButtonClick("bad")}
               >
                 Bad
               </button>
@@ -109,11 +109,11 @@ export default function FillEvaluation() {
                 href="#"
                 className={`p-3 rounded-md text-sm font-medium ${
                   answers[activeQuestion] &&
-                  answers[activeQuestion].answer === "matig"
+                  answers[activeQuestion].answer === "intermediate"
                     ? "text-white bg-indigo-600"
                     : "text-gray-100 bg-gray-700"
                 }`}
-                onClick={() => handleButtonClick("matig")}
+                onClick={() => handleButtonClick("intermediate")}
               >
                 Intermediate
               </button>
@@ -121,11 +121,11 @@ export default function FillEvaluation() {
                 href="#"
                 className={`p-3 rounded-md text-sm font-medium ${
                   answers[activeQuestion] &&
-                  answers[activeQuestion].answer === "goed"
+                  answers[activeQuestion].answer === "good"
                     ? "text-white bg-indigo-600"
                     : "text-gray-100 bg-gray-700"
                 }`}
-                onClick={() => handleButtonClick("goed")}
+                onClick={() => handleButtonClick("good")}
               >
                 Good
               </button>
@@ -133,41 +133,38 @@ export default function FillEvaluation() {
                 href="#"
                 className={`p-3 rounded-md text-sm font-medium ${
                   answers[activeQuestion] &&
-                  answers[activeQuestion].answer === "uitstekend"
+                  answers[activeQuestion].answer === "perfect"
                     ? "text-white bg-indigo-600"
                     : "text-gray-100 bg-gray-700"
                 }`}
-                onClick={() => handleButtonClick("uitstekend")}
+                onClick={() => handleButtonClick("perfect")}
               >
                 Perfect
               </button>
             </div>
             <div className="mt-3 gap-8 flex justify-center">
-              {
-                // If the active question is the first question, don't show the previous button
-                activeQuestion === 0 ? null : (
-                  <button
-                    className="inline-block rounded-full border border-indigo-600 bg-indigo-600 p-3 text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-                    onClick={() => setActiveQuestion(activeQuestion - 1)}
+              {activeQuestion === 0 ? null : (
+                <button
+                  className="inline-block rounded-full border border-indigo-600 bg-indigo-600 p-3 text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+                  onClick={() => setActiveQuestion(activeQuestion - 1)}
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <span className="sr-only">Previous</span>
-                    <svg
-                      className="h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                      />
-                    </svg>
-                  </button>
-                )
-              }
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                </button>
+              )}
 
               {activeQuestion ===
               Object.keys(evaluation.questions || {}).length - 1 ? (
