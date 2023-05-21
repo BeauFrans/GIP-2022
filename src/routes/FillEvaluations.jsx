@@ -56,7 +56,7 @@ export default function FillEvaluation() {
 
   const uploadAnswers = async () => {
     if (answers.length !== Object.keys(evaluation.questions || {}).length) {
-      toast.error("Niet alle vragen zijn beantwoord");
+      toast.error("Not all questions are answered!");
       return;
     }
 
@@ -66,7 +66,10 @@ export default function FillEvaluation() {
       userId: auth.currentUser.uid,
     });
 
-    toast.success("Antwoorden succesvol geupload");
+    toast.success("Awnsers uploaded successfully!");
+    setTimeout(() => {
+      window.location.replace("/existingevaluations");
+    }, 1000);
   };
 
   return (
@@ -80,11 +83,11 @@ export default function FillEvaluation() {
         <div className="w-full justify-center items-center flex-col max-w-5xl my-20 mx-auto">
           <div className="space-y-6 bg-slate-800 px-4 py-5 sm:p-6 shadow rounded-md">
             <p className="text-white my-5">
-              Evaluatie titel: <b>{evaluation.title}</b>
+              Evaluation title: <b>{evaluation.title}</b>
             </p>
 
             <h2 className="text-white font-semibold text-xl my-5">
-              Vraag:{" "}
+              Question:{" "}
               {evaluation.questions && evaluation.questions[activeQuestion]}
             </h2>
             <div className="gap-2 grid grid-cols-4">
@@ -98,7 +101,7 @@ export default function FillEvaluation() {
                 }`}
                 onClick={() => handleButtonClick("slecht")}
               >
-                slecht
+                Bad
               </button>
               <button
                 href="#"
@@ -110,7 +113,7 @@ export default function FillEvaluation() {
                 }`}
                 onClick={() => handleButtonClick("matig")}
               >
-                matig
+                Intermediate
               </button>
               <button
                 href="#"
@@ -122,7 +125,7 @@ export default function FillEvaluation() {
                 }`}
                 onClick={() => handleButtonClick("goed")}
               >
-                goed
+                Good
               </button>
               <button
                 href="#"
@@ -134,7 +137,7 @@ export default function FillEvaluation() {
                 }`}
                 onClick={() => handleButtonClick("uitstekend")}
               >
-                uitstekend
+                Perfect
               </button>
             </div>
             <div className="mt-3 gap-8 flex justify-center">

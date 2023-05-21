@@ -13,7 +13,6 @@ import {
   updateDoc,
   query,
 } from "firebase/firestore";
-import DropdownMenu from "../components/dropdownmenu";
 
 const jaren = [
   { name: "Jaar 1", klassen: [{ klas: "1A" }, { klas: "1B" }, { klas: "1C" }] },
@@ -74,6 +73,10 @@ export default function Home() {
       const userDocRef = querySnapshot.docs[0].ref;
       await updateDoc(userDocRef, { klas: selectedKlas.klas });
       console.log("Document successfully updated!");
+      toast.success("Klas succesvol veranderd!");
+      setTimeout(() => {
+        window.location.replace("/");
+      }, 1000);
     } else {
       // The user doesn't have a document yet, create a new one
       try {
@@ -81,9 +84,13 @@ export default function Home() {
           klas: selectedKlas.klas,
           user_uid: auth.currentUser.uid,
         });
-        toast.success("Successfully created evaluation!");
+        toast.success("Klas succesvol gekozen!");
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 1000);
       } catch (error) {
         console.error("Error writing document: ", error);
+        toast.error("Er is iets fout gegaan!");
       }
     }
   }
@@ -100,7 +107,7 @@ export default function Home() {
             <div className="flex items-center">
               <div className="p-8 w-2/5">
                 <label for="UserEmail" class="text-white">
-                  Geef hier je klas is
+                  Choose your class here
                 </label>
                 <div className="relative">
                   <button

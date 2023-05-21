@@ -6,7 +6,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 export default function Sidebar() {
   const [mail, setMail] = useState("");
   const [name, setName] = useState("");
-  const [rol, setRol] = useState("leerling");
+  const [rol, setRol] = useState("Student");
 
   useEffect(() => {
     const gebruikerCollection = collection(db, "gebruikerinfo");
@@ -25,7 +25,7 @@ export default function Sidebar() {
         const doc = await getDocs(q);
 
         if (doc.size > 0) {
-          setRol("leerkracht");
+          setRol("Teacher");
         }
       }
     });
@@ -123,7 +123,7 @@ export default function Sidebar() {
                   Existing Evaluations{" "}
                 </span>
               </a>
-              {rol === "leerkracht" && (
+              {rol === "Teacher" && (
                 <a
                   href="/make-evaluation"
                   className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600 "
@@ -151,7 +151,7 @@ export default function Sidebar() {
             </nav>
           </details>
 
-          {rol === "leerkracht" && (
+          {rol === "Teacher" && (
             <a
               href="/results"
               className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600  bg-slate-700"
@@ -174,7 +174,7 @@ export default function Sidebar() {
               <span className="ml-3 text-sm font-medium"> Results </span>
             </a>
           )}
-          {rol === "leerkracht" && (
+          {rol === "Teacher" && (
             <a
               href="/myclasses"
               className="flex items-center rounded-lg px-4 py-2 text-gray-200 hover:bg-slate-600  bg-slate-700"
@@ -233,7 +233,7 @@ export default function Sidebar() {
             </summary>
 
             <nav aria-label="Account Nav" className="mt-1.5 ml-8 flex flex-col">
-              {rol !== "leerkracht" && (
+              {rol !== "Teacher" && (
                 <a
                   href="/settingsaccount"
                   className="flex items-center rounded-lg px-4 py-2  text-gray-200 hover:bg-slate-600 "
@@ -255,7 +255,7 @@ export default function Sidebar() {
 
                   <span className="ml-3 text-sm font-medium">
                     {" "}
-                    Klas Kiezen{" "}
+                    Class selection{" "}
                   </span>
                 </a>
               )}

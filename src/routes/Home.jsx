@@ -30,11 +30,11 @@ export default function Home() {
             <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
               <div className="mx-auto max-w-3xl text-center">
                 <h1 className="bg-gradient-to-r from-blue-500 to-blue-700  bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
-                  Welcome to Studento.
+                  Welcome to Studento
                 </h1>
 
                 <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-                  Start making an evaluation today!
+                  Start making evaluations for your students today!
                 </p>
 
                 <div className="mt-8 flex flex-wrap justify-center gap-4"></div>
