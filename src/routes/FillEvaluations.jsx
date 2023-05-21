@@ -4,12 +4,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
 import { useParams } from "react-router-dom";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { toast } from "react-hot-toast";
 
 export default function FillEvaluation() {
   const [evaluation, setEvaluation] = useState({});
   const [activeQuestion, setActiveQuestion] = useState(0);
+  const [blocked, setBlocked] = useState(false);
   const [answers, setAnswers] = useState([]);
 
   const { id } = useParams();
@@ -17,19 +26,30 @@ export default function FillEvaluation() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User signed in
-
-        console.log(id);
-
         const docRef = doc(db, "evaluations", id);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
           setEvaluation(docSnap.data());
+
+          // Check if user already filled in this evaluation
+          const answersRef = collection(db, "antwoorden");
+          const answersSnapshot = await getDocs(
+            query(
+              answersRef,
+              where("evaluationId", "==", id),
+              where("userId", "==", auth.currentUser.uid)
+            )
+          );
+
+          if (answersSnapshot.docs.length > 0) {
+            toast.error("You have already filled in this evaluation!");
+            setBlocked(true);
+          }
         } else {
-          // docSnap.data() will be undefined in this case
           console.log("No such document!");
+          window.location.replace("/");
         }
       } else {
         window.location.replace("/not-logged-in");
@@ -55,13 +75,23 @@ export default function FillEvaluation() {
   };
 
   const uploadAnswers = async () => {
+    if (blocked) {
+      toast.error("You have already filled in this evaluation!");
+      return;
+    }
+
     if (answers.length !== Object.keys(evaluation.questions || {}).length) {
       toast.error("Not all questions are answered!");
       return;
     }
 
     await addDoc(collection(db, "antwoorden"), {
-      answers,
+      answers: [
+        ...answers.map((answer) => ({
+          question: evaluation.questions[answer.question],
+          answer: answer.answer,
+        })),
+      ],
       evaluationId: id,
       userId: auth.currentUser.uid,
       uploaded_at: new Date().toISOString(),

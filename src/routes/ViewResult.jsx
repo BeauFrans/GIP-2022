@@ -18,7 +18,7 @@ export default function Home() {
 
         const q = query(
           colRef,
-          where("userId", "==", user.uid),
+          where("userId", "==", userId),
           where("evaluationId", "==", evaluationId)
         );
 
@@ -43,9 +43,10 @@ export default function Home() {
         <div className="w-full ">
           <section className=" bg-slate-700 text-white">
             <div className="p-8 w-full">
+              <div className="flex"></div>
               <div className="overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left  text-gray-400">
-                  <thead className="text-md  bg-slate-700 text-white">
+                  <thead className="text-md bg-slate-600 text-white">
                     <tr>
                       <th className="px-6 py-3" scope="col">
                         Vraag
