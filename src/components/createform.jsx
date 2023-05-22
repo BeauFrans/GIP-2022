@@ -19,6 +19,7 @@ import { db } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 
+// Voorgeprogrammeerde categorieën
 const categories = [
   { name: "Communicatie" },
   { name: "Middelen aanwenden" },
@@ -48,14 +49,14 @@ export default function CreateForm() {
   };
 
   const uniqueId = generateUniqueId();
-
+// om de categorie te selecteren
   const handleOnChangeSelected = (id, selectedValue) => {
     setSelectedValues({
       ...selectedValues,
       [id]: selectedValue,
     });
   };
-
+// om de vragen te maken
   const handleOnChange = (e) => {
     const abc = {};
     abc[e.target.id] = e.target.value;
@@ -68,6 +69,7 @@ export default function CreateForm() {
   const question = useRef();
   const storage = getStorage();
 
+  //  Om te kijken of de gebruiker is ingelogd
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -77,7 +79,7 @@ export default function CreateForm() {
       }
     });
   }, []);
-
+//  voor het uploaden van de afbeelding
   function handleImageChange(event) {
     setImage(event.target.files[0]);
 
@@ -85,7 +87,7 @@ export default function CreateForm() {
     setPreview(objectUrl);
     console.log(objectUrl);
   }
-
+// Voor het maken van de evaluatie en te kijken of alles is ingevuld en het naar de database te sturen
   async function insertEvaluation() {
     if (image === null) {
       toast.error("Please upload an image!");
@@ -164,7 +166,7 @@ export default function CreateForm() {
                         htmlFor="klas-title"
                         className="block text-sm font-medium text-gray-300"
                       >
-                        Klas
+                        Class
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input

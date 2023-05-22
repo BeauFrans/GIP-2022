@@ -28,12 +28,12 @@ export default function FillEvaluation() {
       if (user) {
         const docRef = doc(db, "evaluations", id);
         const docSnap = await getDoc(docRef);
-
+          // kijkt of het bestand bestaat als het bestaat laad het deze allemaal
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
           setEvaluation(docSnap.data());
 
-          // Check if user already filled in this evaluation
+          // Kijkt of de gebruiker de evaluatie al heeft ingevuld door te kijken of er al een antwoord is met de evaluatie id en de gebruiker id
           const answersRef = collection(db, "antwoorden");
           const answersSnapshot = await getDocs(
             query(
@@ -42,7 +42,7 @@ export default function FillEvaluation() {
               where("userId", "==", auth.currentUser.uid)
             )
           );
-
+          // als het dus groter is dan 0 dus al ingevuld word setblocked als true gezet.
           if (answersSnapshot.docs.length > 0) {
             toast.error("You have already filled in this evaluation!");
             setBlocked(true);
@@ -56,7 +56,7 @@ export default function FillEvaluation() {
       }
     });
   }, [id]);
-
+  
   const handleButtonClick = (rate) => {
     if (answers[activeQuestion]) {
       const newAnswers = [...answers];
@@ -73,18 +73,18 @@ export default function FillEvaluation() {
       },
     ]);
   };
-
+  // Als de waarde dan true is dan krijg je een melding en kan je het niet meer versturen.
   const uploadAnswers = async () => {
     if (blocked) {
       toast.error("You have already filled in this evaluation!");
       return;
     }
-
+  // Kijkt of het aantal antwoorden gelijk is aan het aantal vragen dat er zijn als dit waar is dan word het verstuurd anders niet en word er een melding gegeven.
     if (answers.length !== Object.keys(evaluation.questions || {}).length) {
       toast.error("Not all questions are answered!");
       return;
     }
-
+  // Als de antwoorden dan even zijn met de vragen dan word het verstuurd naar de database.
     await addDoc(collection(db, "antwoorden"), {
       answers: [
         ...answers.map((answer) => ({
@@ -97,7 +97,7 @@ export default function FillEvaluation() {
       uploaded_at: new Date().toISOString(),
       studentName: auth.currentUser.displayName || auth.currentUser.email,
     });
-
+    // Als het verstuurd is geeft dit een melding en redirect naar de existingevaluations na 1 seconde.
     toast.success("Answers uploaded successfully!");
     setTimeout(() => {
       window.location.replace("/existingevaluations");
@@ -117,11 +117,17 @@ export default function FillEvaluation() {
             <p className="text-white my-5">
               Evaluation title: <b>{evaluation.title}</b>
             </p>
+            <h2 className="text-white my-5">
+            Category:{" "}
+              <b>{evaluation.category}</b>
+            </h2>
 
             <h2 className="text-white font-semibold text-xl my-5">
               Question:{" "}
               {evaluation.questions && evaluation.questions[activeQuestion]}
+
             </h2>
+            
             <div className="gap-2 grid grid-cols-4">
               <button
                 href="#"

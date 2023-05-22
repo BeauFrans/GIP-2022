@@ -4,8 +4,10 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  OAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function () {
   const emailRef = useRef();
@@ -16,9 +18,22 @@ export default function () {
   function signInGoogle() {
     signInWithPopup(auth, new GoogleAuthProvider())
       .then((res) => {
+        toast.success("Sign Up successful!");
         console.log(res);
       })
       .catch(() => alert("A login error occured"));
+      toast.error("Something went wrong!");
+  }
+
+  function signInMicrosoft() {
+    signInWithPopup(auth, new OAuthProvider("microsoft.com"))
+      .then(() => {
+        toast.success("Something went wrong!");
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 700);
+      })
+      .catch((err) => console.log(err));
   }
 
   function signUpPassword(e) {
@@ -110,12 +125,18 @@ export default function () {
               <div className="border-b border-slate-600 w-full" />
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-2">
               <button
                 onClick={signInGoogle}
                 className="p-2 rounded-full bg-slate-600 hover:bg-slate-500 transition duration-200 hover:scale-[1.1]"
               >
                 <img src="/google.png" alt="Google" className="w-6 h-6" />
+              </button>
+              <button
+                onClick={signInMicrosoft}
+                className="p-2 rounded-full bg-slate-600 hover:bg-slate-500 transition duration-200 hover:scale-[1.1]"
+              >
+                <img src="/microsoft.png" alt="Google" className="w-6 h-6" />
               </button>
             </div>
           </form>

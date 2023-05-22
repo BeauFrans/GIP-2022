@@ -1,5 +1,5 @@
 import React from "react";
-
+//  Hier worden de properties van de evaluaties geïmporteerd die in de ResultBox component worden gebruikt.
 export default function Resultbox(props) {
   return (
     <section className=" dark:bg-slate-700">
