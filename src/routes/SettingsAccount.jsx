@@ -13,6 +13,7 @@ import {
   updateDoc,
   query,
 } from "firebase/firestore";
+import DropdownMenu from "../components/dropdownmenu";
 
 const jaren = [
   { name: "Jaar 1", klassen: [{ klas: "1A" }, { klas: "1B" }, { klas: "1C" }] },
@@ -61,7 +62,7 @@ export default function Home() {
   const klassen =
     selectedJaar && selectedJaar.klassen ? selectedJaar.klassen : [];
 
-  const klasButtonText = selectedKlas ? selectedKlas.klas : "Klas";
+  const klasButtonText = selectedKlas ? selectedKlas.klas : "Class";
 
   async function saveToDb() {
     const usersRef = collection(db, "gebruikerinfo");
@@ -107,7 +108,7 @@ export default function Home() {
             <div className="flex items-center">
               <div className="p-8 w-2/5">
                 <label for="UserEmail" class="text-white">
-                  Choose your class here
+                  Select your class
                 </label>
                 <div className="relative">
                   <button
