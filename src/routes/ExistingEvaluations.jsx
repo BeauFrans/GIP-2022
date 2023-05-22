@@ -4,16 +4,27 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import Sidebar from "../components/sidebar";
 import EvaluationBox from "../components/evaluationbox";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function ExistingEvaluations() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [evaluations, setEvaluations] = useState([]);
+  const [maker, setMaker] = useState([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User signed in
+        setLoggedIn(true);
+
         setUser(user);
 
         // Give me the klas property of the user with the uid of the current user (user.uid) from the gebruikerinfo collection in the database
@@ -48,14 +59,14 @@ export default function ExistingEvaluations() {
   }, []);
 
   return (
-    <di>
+    <div className="w-screen h-screen bg-slate-700 overflow-hidden">
       <Header />
       <div className="flex">
         <div className="max-w-xs">
           <Sidebar />
         </div>
 
-        <div className="p-8 w-full max-h-screen overflow-auto bg-slate-700">
+        <div className="p-8 w-full max-h-screen overflow-auto">
           <div className="text-center mt-6">
             <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
               Existing evaluations
@@ -68,20 +79,19 @@ export default function ExistingEvaluations() {
           <div className="grid grid-cols-1  lg:grid-cols-3 gap-4">
             {evaluations.map((evaluation) => {
               return (
-                //fills in the component evaluationbox with the data from the database
                 <EvaluationBox
                   title={evaluation.title}
                   id={evaluation.id}
                   about={evaluation.about}
                   image={evaluation.image}
-                  user_image={user.photoURL}
-                  user_name={user.displayName}
+                  user_image={evaluation.makerImage || "/logo-studento.png"}
+                  user_name={evaluation.makerNaam || "no name"}
                 />
               );
             })}
           </div>
         </div>
       </div>
-    </di>
+    </div>
   );
 }
