@@ -11,7 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-
+  //firebase google login functie met een toegevoegde toast
   function signInGoogle() {
     signInWithPopup(auth, new GoogleAuthProvider())
       .then(() => {
@@ -22,7 +22,7 @@ export default function Login() {
       })
       .catch(() => alert("A login error occured"));
   }
-
+  //firebase google login functie met een toegevoegde toast
   function signInMicrosoft() {
     signInWithPopup(auth, new OAuthProvider("microsoft.com"))
       .then(() => {
@@ -36,7 +36,7 @@ export default function Login() {
 
   function signInPassword(e) {
     e.preventDefault();
-
+    //gebruikt te firebase functie om een account aan te maken met het ingevulde email en wachtwoord
     signInWithEmailAndPassword(
       auth,
       emailRef.current.value,
@@ -45,6 +45,7 @@ export default function Login() {
       .then(() => {
         window.location.replace("/");
       })
+      // Om meer gedetailleerde errors te krijgen
       .catch((error) => {
         if (error.code === "auth/wrong-password") {
           toast.error("Wrong password");

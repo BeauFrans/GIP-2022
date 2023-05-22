@@ -42,14 +42,6 @@ export default function ExistingEvaluations() {
           setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
           console.log(doc.id, " => ", doc.data());
         });
-
-        // const querySnapshot = await getDocs(q);
-        // querySnapshot.forEach((doc) => {
-        //   setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
-        //   console.log(doc.id, " => ", doc.data());
-        // });
-
-        // console.log(evaluations);
       } else {
         window.location.replace("/not-logged-in");
       }
