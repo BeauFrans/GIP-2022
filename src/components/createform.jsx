@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Listbox, Transition, Dialog } from "@headlessui/react";
+import { Transition, Dialog } from "@headlessui/react";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   ref,
@@ -8,11 +8,7 @@ import {
   getStorage,
 } from "firebase/storage";
 import { auth } from "../firebase";
-import {
-  CheckIcon,
-  ChevronUpDownIcon,
-  PlusIcon,
-} from "@heroicons/react/20/solid";
+import { PlusIcon } from "@heroicons/react/20/solid";
 import { useRef } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -29,7 +25,6 @@ const categories = [
 ];
 
 export default function CreateForm() {
-  const [selected, setSelected] = useState(categories[0]);
   const [user, setUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [categoryText, setCategoryText] = useState(null);
@@ -37,38 +32,23 @@ export default function CreateForm() {
   const [preview, setPreview] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [counter, setCounter] = useState(0);
-  const [selectedValues, setSelectedValues] = useState({});
   const handleClick = () => {
     setCounter(counter + 1);
     console.log(counter);
   };
 
-  // Make every category have a unique id
-
-  const generateUniqueId = () => {
-    // Generate a unique identifier
-    const uniqueId = uuidv4();
-  };
-
-  const uniqueId = generateUniqueId();
-
-  const handleOnChangeSelected = (id, selectedValue) => {
-    setSelectedValues({
-      ...selectedValues,
-      [id]: selectedValue,
-    });
-  };
-
+  // om de vragen te maken
   const handleOnChange = (e) => {
-    const abc = {};
-    abc[e.target.id] = e.target.value;
-    setInputValues({ ...inputValues, ...abc });
+    const obj = {};
+    obj[e.target.id] = e.target.value;
+    setInputValues({ ...inputValues, ...obj });
   };
 
   const title = useRef();
   const about = useRef();
   const klas = useRef();
   const question = useRef();
+  const category = useRef();
   const storage = getStorage();
 
   useEffect(() => {
@@ -80,7 +60,7 @@ export default function CreateForm() {
       }
     });
   }, []);
-
+  //  voor het uploaden van de afbeelding
   function handleImageChange(event) {
     setImage(event.target.files[0]);
 
@@ -88,7 +68,7 @@ export default function CreateForm() {
     setPreview(objectUrl);
     console.log(objectUrl);
   }
-
+  // Voor het maken van de evaluatie en te kijken of alles is ingevuld en het naar de database te sturen
   async function insertEvaluation() {
     if (image === null) {
       toast.error("Please upload an image!");
@@ -109,21 +89,26 @@ export default function CreateForm() {
             title: title.current.value,
             about: about.current.value,
             questions: inputValues,
-            category: selected.name,
+            category: category.current.value,
             user_uid: user.uid,
             image: downloadURL,
             klas: klas.current.value,
+            makerNaam: user.displayName || user.email,
+            makerImage: user.photoURL || "/logo-studento.png",
           });
           toast.success("Successfully created evaluation!");
+
+          setTimeout(() => {
+            window.location.replace("/existingevaluations");
+          }, 1000);
         });
       }
     );
   }
 
   return (
-    <div className="overflow-y-scroll">
+    <div>
       <Toaster />
-
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -276,6 +261,25 @@ export default function CreateForm() {
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
+            <div className="shadow sm:rounded-md bg-slate-800 mb-5">
+              <div className="p-4">
+                <div className="w-full">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    ref={category}
+                    autoComplete="category"
+                    className="mt-1 block w-full bg-slate-700 text-gray-200 rounded-md border-none shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
             <div className="shadow sm:rounded-md bg-slate-800">
               {Array.from(Array(counter)).map((c, index) => {
                 return (
@@ -298,120 +302,6 @@ export default function CreateForm() {
                           ref={question}
                         />
                       </div>
-
-                      <div className="col-span-6 sm:col-span-3">
-                        <label className="block text-sm font-medium text-gray-300">
-                          Category
-                        </label>
-                        <div className="w-72">
-                          <Listbox
-                            value={selected}
-                            Listbox
-                            id={uniqueId}
-                            onChange={(value) => {
-                              setSelected(value);
-                              handleOnChangeSelected(uniqueId, value);
-                            }}
-                          >
-                            <div className="relative mt-1">
-                              <Listbox.Button
-                                className={`relative cursor-pointer z-0 w-full rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
-                              >
-                                <span className="block truncate text-gray-300">
-                                  {selected.name}
-                                </span>
-                                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                  <ChevronUpDownIcon
-                                    className="h-5 w-5 text-gray-400"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              </Listbox.Button>
-                              <Transition
-                                as={Fragment}
-                                leave="transition ease-in duration-100"
-                                leaveFrom="opacity-100"
-                                leaveTo="opacity-0"
-                              >
-                                <Listbox.Options
-                                  className={`absolute z-20 no-scrollbar mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm`}
-                                >
-                                  <Listbox.Button
-                                    onClick={() => setIsOpen(true)}
-                                    className={({ active }) =>
-                                      `relative cursor-pointer w-full select-none py-2 pl-10 pr-4 hover:bg-slate-600 ${
-                                        active
-                                          ? "bg-slate-600 text-white"
-                                          : "text-gray-200"
-                                      }`
-                                    }
-                                  >
-                                    {({ selected }) => (
-                                      <>
-                                        <span
-                                          className={`truncate flex space-x-2 items-center ${
-                                            selected
-                                              ? "font-medium"
-                                              : "font-normal"
-                                          }`}
-                                        >
-                                          <PlusIcon className="w-4 h-4" />
-                                          <span>Nieuwe categorie</span>
-                                        </span>
-                                        {selected ? (
-                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
-                                            <CheckIcon
-                                              className="h-5 w-5"
-                                              aria-hidden="true"
-                                            />
-                                          </span>
-                                        ) : null}
-                                      </>
-                                    )}
-                                  </Listbox.Button>
-                                  <div className="border-t border-gray-600 my-2" />
-
-                                  {categories.map((person, personIdx) => (
-                                    <Listbox.Option
-                                      key={personIdx}
-                                      className={({ active }) =>
-                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                          active
-                                            ? "bg-slate-600 text-white"
-                                            : "text-gray-200"
-                                        }`
-                                      }
-                                      value={person}
-                                    >
-                                      {({ selected }) => (
-                                        <>
-                                          <span
-                                            className={`block truncate ${
-                                              selected
-                                                ? "font-medium"
-                                                : "font-normal"
-                                            }`}
-                                          >
-                                            {person.name}
-                                          </span>
-                                          {selected ? (
-                                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
-                                              <CheckIcon
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                              />
-                                            </span>
-                                          ) : null}
-                                        </>
-                                      )}
-                                    </Listbox.Option>
-                                  ))}
-                                </Listbox.Options>
-                              </Transition>
-                            </div>
-                          </Listbox>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 );
@@ -429,7 +319,7 @@ export default function CreateForm() {
                   onClick={insertEvaluation}
                   className="inline-flex justify-center rounded-md border border-transparent bg-blue-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Save
+                  Save Evaluation
                 </button>
               </div>
             </div>

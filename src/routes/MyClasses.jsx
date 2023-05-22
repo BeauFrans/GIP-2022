@@ -53,67 +53,6 @@ function Home() {
     toast.success("Class created successfully");
   };
 
-  // const handleClassClick = (klas) => {
-  //   setSelectedClass(klas);
-  // };
-
-  // const addCustomClass = () => {
-  //   if (customClassName) {
-  //     const newClass = { name: customClassName, klassen: [] };
-  //     db.ref("klassen").push(newClass);
-  //     setCustomClassName("");
-  //     if (selectedClass) {
-  //       const selectedClassObj = classes.find(
-  //         (klas) => klas.name === selectedClass
-  //       );
-  //       if (selectedClassObj) {
-  //         selectedClassObj.klassen.push(customClassName);
-  //         setSelectedClass(null);
-  //         setSelectedClass(selectedClass); // Trigger re-render
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const handleMemberClick = (member) => {
-  //   if (selectedClass) {
-  //     const classRef = db.ref("gebruikerinfo");
-  //     classRef
-  //       .orderByChild("name")
-  //       .equalTo(member)
-  //       .once("value", (snapshot) => {
-  //         snapshot.forEach((childSnapshot) => {
-  //           const memberId = childSnapshot.key;
-  //           const memberData = childSnapshot.val();
-
-  //           // Implement logic to add or remove member from the selected class
-  //           const selectedClassRef = db.ref(`klassen/${selectedClass}/klassen`);
-  //           selectedClassRef.once("value", (classSnapshot) => {
-  //             const classData = classSnapshot.val();
-
-  //             if (classData && classData.includes(member)) {
-  //               // Member exists in the selected class, remove them
-  //               const updatedClassData = classData.filter(
-  //                 (klasItem) => klasItem !== member
-  //               );
-  //               selectedClassRef.set(updatedClassData);
-  //             } else {
-  //               // Member doesn't exist in the selected class, add them
-  //               const updatedClassData = classData
-  //                 ? [...classData, member]
-  //                 : [member];
-  //               selectedClassRef.set(updatedClassData);
-  //             }
-  //           });
-
-  //           // You can also update the member's class information in the user's node
-  //           const memberRef = db.ref(`gebruikerinfo/${memberId}`);
-  //           memberRef.update({ klas: selectedClass });
-  //         });
-  //       });
-  //   }
-  // };
-
   return (
     <div className="w-screen h-screen bg-slate-700 overflow-hidden">
       <Header />

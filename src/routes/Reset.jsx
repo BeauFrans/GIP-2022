@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Reset() {
   const emailRef = useRef();
-  // const [error, setError] = useState(false);
+  // Firestore functie om een wachtwoord te resetten en een email te sturen naar het ingegeven email
 
   function resetPassword(e) {
     e.preventDefault();

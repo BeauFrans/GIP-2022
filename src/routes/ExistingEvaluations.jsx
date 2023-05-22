@@ -14,7 +14,6 @@ export default function ExistingEvaluations() {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User signed in
-
         setUser(user);
 
         // Give me the klas property of the user with the uid of the current user (user.uid) from the gebruikerinfo collection in the database
@@ -42,14 +41,6 @@ export default function ExistingEvaluations() {
           setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
           console.log(doc.id, " => ", doc.data());
         });
-
-        // const querySnapshot = await getDocs(q);
-        // querySnapshot.forEach((doc) => {
-        //   setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
-        //   console.log(doc.id, " => ", doc.data());
-        // });
-
-        // console.log(evaluations);
       } else {
         window.location.replace("/not-logged-in");
       }
@@ -57,14 +48,14 @@ export default function ExistingEvaluations() {
   }, []);
 
   return (
-    <div className="w-screen h-screen bg-slate-700 overflow-hidden">
+    <di>
       <Header />
       <div className="flex">
         <div className="max-w-xs">
           <Sidebar />
         </div>
 
-        <div className="p-8 w-full max-h-screen overflow-auto">
+        <div className="p-8 w-full max-h-screen overflow-auto bg-slate-700">
           <div className="text-center mt-6">
             <h1 className="text-2xl font-semibold text-white capitalize lg:text-3xl dark:text-white">
               Existing evaluations
@@ -77,6 +68,7 @@ export default function ExistingEvaluations() {
           <div className="grid grid-cols-1  lg:grid-cols-3 gap-4">
             {evaluations.map((evaluation) => {
               return (
+                //fills in the component evaluationbox with the data from the database
                 <EvaluationBox
                   title={evaluation.title}
                   id={evaluation.id}
@@ -90,6 +82,6 @@ export default function ExistingEvaluations() {
           </div>
         </div>
       </div>
-    </div>
+    </di>
   );
 }

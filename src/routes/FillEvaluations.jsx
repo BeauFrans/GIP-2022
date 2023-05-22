@@ -28,7 +28,7 @@ export default function FillEvaluation() {
       if (user) {
         const docRef = doc(db, "evaluations", id);
         const docSnap = await getDoc(docRef);
-          // kijkt of het bestand bestaat als het bestaat laad het deze allemaal
+        // kijkt of het bestand bestaat als het bestaat laad het deze allemaal
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
           setEvaluation(docSnap.data());
@@ -56,7 +56,7 @@ export default function FillEvaluation() {
       }
     });
   }, [id]);
-  
+
   const handleButtonClick = (rate) => {
     if (answers[activeQuestion]) {
       const newAnswers = [...answers];
@@ -79,12 +79,12 @@ export default function FillEvaluation() {
       toast.error("You have already filled in this evaluation!");
       return;
     }
-  // Kijkt of het aantal antwoorden gelijk is aan het aantal vragen dat er zijn als dit waar is dan word het verstuurd anders niet en word er een melding gegeven.
+    // Kijkt of het aantal antwoorden gelijk is aan het aantal vragen dat er zijn als dit waar is dan word het verstuurd anders niet en word er een melding gegeven.
     if (answers.length !== Object.keys(evaluation.questions || {}).length) {
       toast.error("Not all questions are answered!");
       return;
     }
-  // Als de antwoorden dan even zijn met de vragen dan word het verstuurd naar de database.
+    // Als de antwoorden dan even zijn met de vragen dan word het verstuurd naar de database.
     await addDoc(collection(db, "antwoorden"), {
       answers: [
         ...answers.map((answer) => ({
@@ -118,16 +118,14 @@ export default function FillEvaluation() {
               Evaluation title: <b>{evaluation.title}</b>
             </p>
             <h2 className="text-white my-5">
-            Category:{" "}
-              <b>{evaluation.category}</b>
+              Category: <b>{evaluation.category}</b>
             </h2>
 
             <h2 className="text-white font-semibold text-xl my-5">
               Question:{" "}
               {evaluation.questions && evaluation.questions[activeQuestion]}
-
             </h2>
-            
+
             <div className="gap-2 grid grid-cols-4">
               <button
                 href="#"

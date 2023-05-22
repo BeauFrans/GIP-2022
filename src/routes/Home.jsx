@@ -5,13 +5,10 @@ import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 
 export default function Home() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
+  // Kijkt of de gebruiker is ingelogd anders terug naar de log in pagina
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User signed in
-        setLoggedIn(true);
       } else {
         window.location.replace("/not-logged-in");
       }

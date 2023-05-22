@@ -4,11 +4,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Sidebar from "../components/sidebar";
 import CreateForm from "../components/createform";
-import DropdownMenu from "../components/dropdownmenu";
 
 export default function MakeEvaluation() {
   const [loggedIn, setLoggedIn] = useState(false);
-
+  //Om te kijken of de gebruiker is ingelogd
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -22,7 +21,7 @@ export default function MakeEvaluation() {
   }, []);
 
   return (
-    <div className="h-screen w-screen overflow-y-hidden">
+    <div className="h-screen w-screen overflow-x-hidden overflow-y-auto">
       <Header />
       <div className="flex h-screen justify-between">
         <div className="max-w-sm">

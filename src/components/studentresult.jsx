@@ -6,7 +6,7 @@ export default function StudentResult(props) {
       href={`/viewresult/${props.evaluationId}/${props.userId}`}
       class="relative block overflow-hidden rounded-lg border border-slate-600 p-4 sm:p-6 lg:p-8"
     >
-      <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+      <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r bg-blue-600"></span>
 
       <div class="sm:flex sm:justify-between sm:gap-4">
         <div>

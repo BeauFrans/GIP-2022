@@ -42,14 +42,6 @@ export default function ExistingEvaluations() {
           setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
           console.log(doc.id, " => ", doc.data());
         });
-
-        // const querySnapshot = await getDocs(q);
-        // querySnapshot.forEach((doc) => {
-        //   setEvaluations((prev) => [...prev, { ...doc.data(), id: doc.id }]);
-        //   console.log(doc.id, " => ", doc.data());
-        // });
-
-        // console.log(evaluations);
       } else {
         window.location.replace("/not-logged-in");
       }
@@ -82,8 +74,8 @@ export default function ExistingEvaluations() {
                   id={evaluation.id}
                   about={evaluation.about}
                   image={evaluation.image}
-                  user_image={user.photoURL}
-                  user_name={user.displayName}
+                  user_image={evaluation.makerImage || "/logo-studento.png"}
+                  user_name={evaluation.makerNaam || "no name"}
                 />
               );
             })}
