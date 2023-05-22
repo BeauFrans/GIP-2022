@@ -19,14 +19,13 @@ import { db } from "../firebase";
 import toast, { Toaster } from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 
-// Voorgeprogrammeerde categorieën
 const categories = [
-  { name: "Communicatie" },
-  { name: "Middelen aanwenden" },
-  { name: "Plannen en organiseren" },
-  { name: "Zelfstandigheid en verantwoordelijkheid" },
-  { name: "Initiatief nemen" },
-  { name: "Doorzetting" },
+  { name: "Communication" },
+  { name: "Using resources" },
+  { name: "Planning and organising" },
+  { name: "Independence and responsibility" },
+  { name: "Taking the initiative" },
+  { name: "Perseverance" },
 ];
 
 export default function CreateForm() {
@@ -44,19 +43,22 @@ export default function CreateForm() {
     console.log(counter);
   };
 
+  // Make every category have a unique id
+
   const generateUniqueId = () => {
     // Generate a unique identifier
+    const uniqueId = uuidv4();
   };
 
   const uniqueId = generateUniqueId();
-// om de categorie te selecteren
+
   const handleOnChangeSelected = (id, selectedValue) => {
     setSelectedValues({
       ...selectedValues,
       [id]: selectedValue,
     });
   };
-// om de vragen te maken
+
   const handleOnChange = (e) => {
     const abc = {};
     abc[e.target.id] = e.target.value;
@@ -69,7 +71,6 @@ export default function CreateForm() {
   const question = useRef();
   const storage = getStorage();
 
-  //  Om te kijken of de gebruiker is ingelogd
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -79,7 +80,7 @@ export default function CreateForm() {
       }
     });
   }, []);
-//  voor het uploaden van de afbeelding
+
   function handleImageChange(event) {
     setImage(event.target.files[0]);
 
@@ -87,7 +88,7 @@ export default function CreateForm() {
     setPreview(objectUrl);
     console.log(objectUrl);
   }
-// Voor het maken van de evaluatie en te kijken of alles is ingevuld en het naar de database te sturen
+
   async function insertEvaluation() {
     if (image === null) {
       toast.error("Please upload an image!");
@@ -166,7 +167,7 @@ export default function CreateForm() {
                         htmlFor="klas-title"
                         className="block text-sm font-medium text-gray-300"
                       >
-                        Class
+                        Klas
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input
@@ -175,7 +176,7 @@ export default function CreateForm() {
                           id="klas-title"
                           ref={klas}
                           className="block w-full flex-1 text-white rounded-md  bg-slate-700 border-none focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                          placeholder="Your klas...."
+                          placeholder="Your class...."
                         />
                       </div>
                     </div>
